@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="FERS Retirement Calculator">
+  <rect width="64" height="64" rx="14" fill="#173a52" />
+  <path d="M19 22h26" stroke="#f6f7f8" stroke-width="5" stroke-linecap="round" />
+  <path d="M22 32h20" stroke="#b35c22" stroke-width="5" stroke-linecap="round" />
+  <path d="M25 42h14" stroke="#f6f7f8" stroke-width="5" stroke-linecap="round" />
+</svg>

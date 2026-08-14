@@ -1,0 +1,1294 @@
+---
+const { lastReviewed = "2026-08-14" } = Astro.props;
+---
+
+<section id="calculator" class="overflow-hidden rounded-xl border border-line bg-surface shadow-[0_18px_60px_rgba(23,42,58,0.08)]">
+  <div class="print-only mb-6">
+    <p class="text-2xl font-semibold text-ink">FERS Retirement Calculator</p>
+    <p class="mt-2 text-sm text-muted">
+      Prepared: {lastReviewed}. Independent educational estimate, not an official OPM benefit determination.
+    </p>
+  </div>
+  <div class="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
+    <div class="p-6 sm:p-8">
+      <div class="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-positive">
+        <span class="inline-flex items-center gap-1.5">
+          <i class="ph ph-check-circle" aria-hidden="true"></i>
+          Free
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <i class="ph ph-lock-simple" aria-hidden="true"></i>
+          No sign-up
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <i class="ph ph-eye-slash" aria-hidden="true"></i>
+          Private
+        </span>
+      </div>
+
+      <p class="mt-6 text-sm font-semibold uppercase tracking-normal text-accent">
+        Federal pension estimator
+      </p>
+      <h2 class="mt-3 max-w-2xl text-2xl font-semibold leading-tight tracking-normal text-ink sm:text-3xl">
+        Estimate your FERS pension in under 30 seconds.
+      </h2>
+      <p class="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+        Enter three numbers for a quick estimate, then open advanced options to include sick leave, military buyback, special provisions, and survivor benefits.
+      </p>
+
+      <div class="mt-6 rounded-lg border border-line bg-canvas/50 px-4 py-3" aria-live="polite">
+        <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-base text-muted">
+          <span class="font-semibold text-ink">Quick estimate</span>
+          <span id="quick-annual" class="text-lg font-semibold text-accent">$27,500</span>
+          <span>per year</span>
+          <span class="text-muted">/</span>
+          <span id="quick-monthly" class="text-lg font-semibold text-ink">$2,292</span>
+          <span>per month</span>
+        </div>
+        <p class="mt-2 text-xs leading-relaxed text-muted">
+          Example shown: $100,000 High-3, 25 years of service, age 62. Based on the
+          <a
+            href="https://www.opm.gov/retirement-center/fers-information/computation/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-primary hover:underline"
+          >
+            OPM FERS formula
+          </a>.
+        </p>
+      </div>
+
+      <form class="no-print mt-7 grid gap-4 sm:grid-cols-2" aria-label="FERS calculator inputs">
+        <label class="block">
+          <span class="text-sm font-semibold text-ink">High-3 Average Salary</span>
+          <span class="mt-2 flex items-center rounded-lg border border-line bg-canvas focus-within:border-primary">
+            <span class="pl-3 text-sm text-muted">$</span>
+            <input
+              id="high3"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="1000"
+              value="100000"
+              class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
+            />
+          </span>
+        </label>
+
+        <label class="block">
+          <span class="text-sm font-semibold text-ink">Years of Creditable Service</span>
+          <input
+            id="service-years"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.1"
+            value="25"
+            class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+          />
+        </label>
+
+        <label class="block">
+          <span class="text-sm font-semibold text-ink">Retirement Age</span>
+          <input
+            id="retirement-age"
+            type="number"
+            inputmode="numeric"
+            min="50"
+            max="70"
+            step="1"
+            value="62"
+            class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+          />
+        </label>
+
+        <label class="block">
+          <span class="text-sm font-semibold text-ink">Birth Year</span>
+          <input
+            id="birth-year"
+            type="number"
+            inputmode="numeric"
+            min="1940"
+            max="2010"
+            step="1"
+            value="1970"
+            class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+          />
+        </label>
+      </form>
+
+      <div class="no-print mt-6">
+        <button
+          type="button"
+          id="advanced-toggle"
+          class="inline-flex items-center gap-2 rounded-lg border border-line bg-soft px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-line/70 active:translate-y-px"
+          aria-expanded="false"
+          aria-controls="advanced-fields"
+        >
+          <i class="ph ph-sliders-horizontal text-lg" aria-hidden="true"></i>
+          Advanced options
+        </button>
+      </div>
+
+      <div id="advanced-fields" class="no-print mt-5 hidden border-t border-line pt-5">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">Unused Sick Leave Hours</span>
+            <input
+              id="sick-leave"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              step="1"
+              value="0"
+              class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+            />
+            <span class="mt-2 block text-xs leading-relaxed text-muted">2,087 hours is about one year of service.</span>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">Military Buyback Years</span>
+            <input
+              id="military-years"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="0.1"
+              value="0"
+              class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+            />
+            <span class="mt-2 block text-xs leading-relaxed text-muted">Use only military time for which a deposit was paid.</span>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">Special Category</span>
+            <select
+              id="special-category"
+              class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+            >
+              <option value="none">None</option>
+              <option value="leo">Law Enforcement Officer</option>
+              <option value="atc">Air Traffic Controller</option>
+              <option value="firefighter">Firefighter</option>
+              <option value="nuclear">Nuclear Materials Courier</option>
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">Retirement System</span>
+            <select
+              id="retirement-system"
+              class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+            >
+              <option value="fers">FERS</option>
+              <option value="csrs">CSRS</option>
+              <option value="csrs-offset">CSRS-Offset</option>
+            </select>
+            <span class="mt-2 block text-xs leading-relaxed text-muted">
+              This calculator uses FERS formulas. CSRS and CSRS-Offset results should be verified with OPM.
+            </span>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">Survivor Benefit</span>
+            <select
+              id="survivor-benefit"
+              class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+            >
+              <option value="none">None</option>
+              <option value="partial">Partial survivor benefit</option>
+              <option value="full">Full survivor benefit</option>
+            </select>
+          </label>
+
+          <label class="block sm:col-span-2">
+            <span class="text-sm font-semibold text-ink">Estimated Social Security at 62</span>
+            <span class="mt-2 flex items-center rounded-lg border border-line bg-canvas focus-within:border-primary">
+              <span class="pl-3 text-sm text-muted">$</span>
+              <input
+                id="social-security-input"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="50"
+                value="2000"
+                class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
+              />
+            </span>
+            <span class="mt-2 block text-xs leading-relaxed text-muted">Monthly benefit, used only for the FERS Supplement estimate.</span>
+          </label>
+
+          <div class="block sm:col-span-2">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="text-sm font-semibold text-ink">High-3 helper</span>
+                <span class="mt-2 block text-xs leading-relaxed text-muted">
+                  Enter one annual salary per line, newest first. We will average every possible 36-month window.
+                </span>
+              </div>
+            </div>
+            <textarea
+              id="salary-history"
+              aria-label="High-3 salary history"
+              rows="4"
+              spellcheck="false"
+              placeholder="105000&#10;102000&#10;99000&#10;95000"
+              class="mt-3 w-full resize-y rounded-lg border border-line bg-canvas px-3 py-3 font-mono text-sm leading-6 text-ink outline-none placeholder:text-muted focus:border-primary"
+            ></textarea>
+            <div class="mt-3 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                id="apply-high3"
+                class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
+              >
+                <i class="ph ph-magnifying-glass text-lg" aria-hidden="true"></i>
+                Apply High-3
+              </button>
+              <p id="high3-helper-result" class="text-sm font-semibold text-accent" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">Federal Tax Withholding %</span>
+            <input
+              id="federal-tax-rate"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              max="50"
+              step="1"
+              value="15"
+              class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+            />
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">State Tax Withholding %</span>
+            <input
+              id="state-tax-rate"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              max="30"
+              step="1"
+              value="5"
+              class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary"
+            />
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">TSP Monthly Withdrawal</span>
+            <span class="mt-2 flex items-center rounded-lg border border-line bg-canvas focus-within:border-primary">
+              <span class="pl-3 text-sm text-muted">$</span>
+              <input
+                id="tsp-monthly"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="50"
+                value="0"
+                class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
+              />
+            </span>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">Other Monthly Income</span>
+            <span class="mt-2 flex items-center rounded-lg border border-line bg-canvas focus-within:border-primary">
+              <span class="pl-3 text-sm text-muted">$</span>
+              <input
+                id="other-monthly"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="50"
+                value="0"
+                class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
+              />
+            </span>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">FEHB Monthly Premium</span>
+            <span class="mt-2 flex items-center rounded-lg border border-line bg-canvas focus-within:border-primary">
+              <span class="pl-3 text-sm text-muted">$</span>
+              <input
+                id="fehb-monthly"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="10"
+                value="0"
+                class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
+              />
+            </span>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-ink">FEGLI Monthly Premium</span>
+            <span class="mt-2 flex items-center rounded-lg border border-line bg-canvas focus-within:border-primary">
+              <span class="pl-3 text-sm text-muted">$</span>
+              <input
+                id="fegli-monthly"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="10"
+                value="0"
+                class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
+              />
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="no-print mt-7 flex flex-wrap gap-3">
+        <button
+          type="button"
+          id="calculate-button"
+          class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-hover active:translate-y-px"
+        >
+          <i class="ph ph-calculator text-lg" aria-hidden="true"></i>
+          Calculate
+        </button>
+        <button
+          type="button"
+          id="reset-button"
+          class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
+        >
+          <i class="ph ph-arrow-counter-clockwise text-lg" aria-hidden="true"></i>
+          Reset
+        </button>
+        <button
+          type="button"
+          id="share-button"
+          class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
+        >
+          <i class="ph ph-share-network text-lg" aria-hidden="true"></i>
+          Share
+        </button>
+        <button
+          type="button"
+          id="copy-summary-button"
+          class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
+        >
+          <i class="ph ph-copy text-lg" aria-hidden="true"></i>
+          Copy summary
+        </button>
+        <button
+          type="button"
+          id="print-report-button"
+          class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
+        >
+          <i class="ph ph-printer text-lg" aria-hidden="true"></i>
+          Print report
+        </button>
+        <button
+          type="button"
+          id="embed-button"
+          class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
+        >
+          <i class="ph ph-code-simple text-lg" aria-hidden="true"></i>
+          Embed
+        </button>
+        <button
+          type="button"
+          id="download-report-button"
+          class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
+        >
+          <i class="ph ph-download-simple text-lg" aria-hidden="true"></i>
+          Download report
+        </button>
+      </div>
+
+      <p class="mt-4 text-xs leading-relaxed text-muted">
+        Your inputs stay in this browser. This estimate is for education only and is not an official OPM benefit determination.
+      </p>
+    </div>
+
+    <aside class="border-t border-line bg-canvas/70 p-6 sm:p-8 lg:border-l lg:border-t-0" aria-live="polite">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-muted">Your estimate</p>
+          <p class="mt-1 text-xs text-muted">Updates as you change the inputs.</p>
+        </div>
+        <i class="ph ph-trend-up text-2xl text-accent" aria-hidden="true"></i>
+      </div>
+
+      <p
+        id="system-warning"
+        class="mt-5 hidden rounded-lg border border-warning/20 bg-warning-soft px-4 py-3 text-sm leading-relaxed text-warning"
+      >
+        This estimate uses FERS formulas. CSRS and CSRS-Offset have different rules, so use this result only as a rough reference.
+      </p>
+
+      <div class="mt-8">
+        <p class="text-sm font-medium text-muted">Annual FERS pension</p>
+        <p id="annual-pension" class="mt-1 text-4xl font-semibold tracking-normal text-ink sm:text-5xl">$27,500</p>
+        <p class="mt-2 text-sm text-muted">
+          <span id="monthly-pension">$2,292</span> per month before taxes
+        </p>
+      </div>
+
+      <p class="mt-4 rounded-lg border border-line bg-surface px-4 py-3 text-xs leading-relaxed text-muted">
+        Based on the FERS formula from OPM. Independent educational estimate, not affiliated with OPM.
+        <span class="mt-1 block">Last updated: {lastReviewed}</span>
+      </p>
+
+      <dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-6">
+        <div>
+          <dt class="text-xs font-medium uppercase tracking-normal text-muted">Multiplier</dt>
+          <dd id="multiplier" class="mt-2 text-lg font-semibold text-ink">1.1%</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium uppercase tracking-normal text-muted">After survivor</dt>
+          <dd id="after-survivor" class="mt-2 text-lg font-semibold text-ink">$27,500</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium uppercase tracking-normal text-muted">FERS Supplement</dt>
+          <dd id="supplement-estimate" class="mt-2 text-lg font-semibold text-ink">$0</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium uppercase tracking-normal text-muted">FERS total monthly</dt>
+          <dd id="total-monthly" class="mt-2 text-lg font-semibold text-ink">$2,292</dd>
+        </div>
+      </dl>
+
+      <div class="mt-6 rounded-lg border border-line bg-surface p-4">
+        <p class="text-sm font-semibold text-ink">Projected retirement income</p>
+        <dl class="mt-4 grid gap-3 sm:grid-cols-2">
+          <div>
+            <dt class="text-xs font-medium uppercase tracking-normal text-muted">Monthly after taxes</dt>
+            <dd id="net-monthly" class="mt-2 text-xl font-semibold tracking-normal text-ink">$2,292</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-medium uppercase tracking-normal text-muted">Total with SS/TSP</dt>
+            <dd id="combined-monthly" class="mt-2 text-xl font-semibold tracking-normal text-ink">$2,292</dd>
+          </div>
+        </dl>
+        <p class="mt-3 text-xs leading-relaxed text-muted">
+          Total includes FERS, Supplement where eligible, Social Security at 62+, TSP, and other income. Taxes are rough estimates.
+        </p>
+      </div>
+
+      <div class="mt-7 rounded-lg border border-line bg-surface p-4">
+        <p class="text-sm font-semibold text-ink">How this is calculated</p>
+        <ul id="assumptions" class="mt-3 space-y-2 text-xs leading-relaxed text-muted"></ul>
+      </div>
+
+      <div class="mt-7 rounded-lg border border-line bg-surface p-4">
+        <div class="flex items-center justify-between gap-3">
+          <p class="text-sm font-semibold text-ink">Retirement age comparison</p>
+          <p class="text-xs font-medium text-muted">Same inputs</p>
+        </div>
+        <div id="scenario-summary" class="mt-4 grid gap-3"></div>
+      </div>
+
+      <div class="mt-7 rounded-lg border border-line bg-surface p-4">
+        <div class="flex items-center justify-between gap-3">
+          <p class="text-sm font-semibold text-ink">Survivor benefit comparison</p>
+          <p class="text-xs font-medium text-muted">Same pension inputs</p>
+        </div>
+        <div id="survivor-comparison" class="mt-4 grid gap-2"></div>
+      </div>
+
+      <div class="mt-7 rounded-lg border border-line bg-surface p-4">
+        <p class="text-sm font-semibold text-ink">What this means</p>
+        <p id="decision-summary" class="mt-3 text-xs leading-relaxed text-muted"></p>
+      </div>
+    </aside>
+  </div>
+
+  <div id="scenarios" class="border-t border-line bg-surface">
+    <div class="page-shell px-6 py-6 sm:px-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm font-semibold text-ink">Compare retirement ages</p>
+          <p class="mt-1 text-xs leading-relaxed text-muted">
+            Service is projected forward or backward from the age you entered. These are planning scenarios, not official determinations.
+          </p>
+        </div>
+      </div>
+      <div id="scenario-list" class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"></div>
+    </div>
+  </div>
+</section>
+
+<div id="mobile-quick-bar" class="no-print fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur lg:hidden">
+  <div class="page-shell flex items-center justify-between gap-3">
+    <div class="min-w-0 text-sm">
+      <span class="text-muted">Estimate</span>
+      <span id="mobile-quick-annual" class="ml-2 font-semibold text-accent">$27,500</span>
+      <span class="mx-1 text-muted">/</span>
+      <span id="mobile-quick-monthly" class="font-semibold text-ink">$2,292</span>
+    </div>
+    <a href="#calculator" class="shrink-0 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white">
+      Calculate
+    </a>
+  </div>
+</div>
+
+<script define:vars={{ lastReviewed }}>
+  const currency = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
+
+  const elements = {
+    high3: document.getElementById("high3"),
+    serviceYears: document.getElementById("service-years"),
+    retirementAge: document.getElementById("retirement-age"),
+    birthYear: document.getElementById("birth-year"),
+    sickLeave: document.getElementById("sick-leave"),
+    militaryYears: document.getElementById("military-years"),
+    specialCategory: document.getElementById("special-category"),
+    retirementSystem: document.getElementById("retirement-system"),
+    survivorBenefit: document.getElementById("survivor-benefit"),
+    socialSecurity: document.getElementById("social-security-input"),
+    salaryHistory: document.getElementById("salary-history"),
+    applyHigh3: document.getElementById("apply-high3"),
+    high3HelperResult: document.getElementById("high3-helper-result"),
+    federalTaxRate: document.getElementById("federal-tax-rate"),
+    stateTaxRate: document.getElementById("state-tax-rate"),
+    tspMonthly: document.getElementById("tsp-monthly"),
+    otherMonthly: document.getElementById("other-monthly"),
+    fehbMonthly: document.getElementById("fehb-monthly"),
+    fegliMonthly: document.getElementById("fegli-monthly"),
+    advancedToggle: document.getElementById("advanced-toggle"),
+    advancedFields: document.getElementById("advanced-fields"),
+    calculateButton: document.getElementById("calculate-button"),
+    resetButton: document.getElementById("reset-button"),
+    shareButton: document.getElementById("share-button"),
+    copySummaryButton: document.getElementById("copy-summary-button"),
+    printReportButton: document.getElementById("print-report-button"),
+    embedButton: document.getElementById("embed-button"),
+    downloadReportButton: document.getElementById("download-report-button"),
+    annualPension: document.getElementById("annual-pension"),
+    monthlyPension: document.getElementById("monthly-pension"),
+    quickAnnual: document.getElementById("quick-annual"),
+    quickMonthly: document.getElementById("quick-monthly"),
+    mobileQuickAnnual: document.getElementById("mobile-quick-annual"),
+    mobileQuickMonthly: document.getElementById("mobile-quick-monthly"),
+    multiplier: document.getElementById("multiplier"),
+    afterSurvivor: document.getElementById("after-survivor"),
+    supplementEstimate: document.getElementById("supplement-estimate"),
+    totalMonthly: document.getElementById("total-monthly"),
+    netMonthly: document.getElementById("net-monthly"),
+    combinedMonthly: document.getElementById("combined-monthly"),
+    systemWarning: document.getElementById("system-warning"),
+    assumptions: document.getElementById("assumptions"),
+    scenarioList: document.getElementById("scenario-list"),
+    scenarioSummary: document.getElementById("scenario-summary"),
+    survivorComparison: document.getElementById("survivor-comparison"),
+    decisionSummary: document.getElementById("decision-summary"),
+  };
+
+  function numberFrom(value) {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+  }
+
+  function getMRA(birthYear) {
+    if (birthYear >= 1970) return 57;
+    if (birthYear === 1969) return 56 + 10 / 12;
+    if (birthYear === 1968) return 56 + 8 / 12;
+    if (birthYear === 1967) return 56 + 6 / 12;
+    if (birthYear === 1966) return 56 + 4 / 12;
+    if (birthYear === 1965) return 56 + 2 / 12;
+    if (birthYear >= 1953 && birthYear <= 1964) return 56;
+    if (birthYear === 1952) return 55 + 10 / 12;
+    if (birthYear === 1951) return 55 + 8 / 12;
+    if (birthYear === 1950) return 55 + 6 / 12;
+    if (birthYear === 1949) return 55 + 4 / 12;
+    if (birthYear === 1948) return 55 + 2 / 12;
+    return 55;
+  }
+
+  function getSurvivorReduction(value) {
+    if (value === "partial") return 0.05;
+    if (value === "full") return 0.1;
+    return 0;
+  }
+
+  function formatAge(age) {
+    const years = Math.floor(age);
+    const months = Math.round((age - years) * 12);
+
+    if (months === 12) {
+      return `${years + 1}y`;
+    }
+
+    if (months === 0) {
+      return `${years}y`;
+    }
+
+    return `${years}y ${months}m`;
+  }
+
+  function computeHigh3FromHistory(text) {
+    const salaries = text
+      .split(/\r?\n/)
+      .map((line) => Number.parseFloat(line.replace(/[^0-9.]/g, "")))
+      .filter((value) => Number.isFinite(value) && value > 0);
+
+    if (salaries.length === 0) {
+      return null;
+    }
+
+    const monthlySalaries = salaries.flatMap((salary) => Array(12).fill(salary));
+
+    if (monthlySalaries.length < 36) {
+      return (
+        monthlySalaries.reduce((sum, value) => sum + value, 0) /
+        monthlySalaries.length
+      );
+    }
+
+    let best = 0;
+
+    for (let start = 0; start <= monthlySalaries.length - 36; start += 1) {
+      const window = monthlySalaries.slice(start, start + 36);
+      const average = window.reduce((sum, value) => sum + value, 0) / 36;
+      best = Math.max(best, average);
+    }
+
+    return best;
+  }
+
+  function getScenario({
+    high3,
+    serviceYears,
+    age,
+    birthYear,
+    sickLeaveHours = 0,
+    militaryYears = 0,
+    specialCategory = "none",
+    survivorBenefit = "none",
+    socialSecurity = 0,
+  }) {
+    const sickLeaveYears = sickLeaveHours / 2087;
+    const totalService = Math.max(0, serviceYears + militaryYears + sickLeaveYears);
+    const mra = getMRA(birthYear);
+    let grossAnnual = 0;
+    let multiplierText = "";
+
+    if (specialCategory !== "none") {
+      const specialYears = Math.min(totalService, 20);
+      const regularYears = Math.max(totalService - 20, 0);
+      grossAnnual = high3 * specialYears * 0.017 + high3 * regularYears * 0.01;
+      multiplierText = "1.7% for first 20 years, then 1.0%";
+    } else {
+      const multiplier = age >= 62 && totalService >= 20 ? 0.011 : 0.01;
+      grossAnnual = high3 * totalService * multiplier;
+      multiplierText = `${(multiplier * 100).toFixed(1)}%`;
+    }
+
+    let ageReduction = 0;
+    let mra10Applied = false;
+
+    if (
+      specialCategory === "none" &&
+      age < 62 &&
+      totalService >= 10 &&
+      age >= mra &&
+      totalService < 30 &&
+      !(age >= 60 && totalService >= 20)
+    ) {
+      ageReduction = Math.max(0, 62 - age) * 0.05;
+      mra10Applied = true;
+    }
+
+    const afterAgeReduction = grossAnnual * (1 - ageReduction);
+    const survivorReduction = getSurvivorReduction(survivorBenefit);
+    const afterSurvivor = afterAgeReduction * (1 - survivorReduction);
+
+    let supplement = 0;
+    let supplementEligible = false;
+    const hasImmediateEligibility =
+      totalService >= 30 ||
+      (age >= 60 && totalService >= 20) ||
+      (age >= mra && totalService >= 10) ||
+      specialCategory !== "none";
+
+    if (socialSecurity > 0 && age < 62 && hasImmediateEligibility) {
+      supplement = socialSecurity * (totalService / 40);
+      supplementEligible = true;
+    }
+
+    return {
+      high3,
+      totalService,
+      grossAnnual,
+      multiplierText,
+      ageReduction,
+      mra10Applied,
+      afterAgeReduction,
+      survivorReduction,
+      afterSurvivor,
+      supplement,
+      supplementEligible,
+      totalAnnual: afterSurvivor + supplement,
+      mra,
+    };
+  }
+
+  function projectService(serviceYears, fromAge, toAge) {
+    return Math.max(0, serviceYears + (toAge - fromAge));
+  }
+
+  function getCurrentState() {
+    return {
+      high3: numberFrom(elements.high3.value),
+      serviceYears: numberFrom(elements.serviceYears.value),
+      age: numberFrom(elements.retirementAge.value),
+      birthYear: numberFrom(elements.birthYear.value),
+      sickLeaveHours: numberFrom(elements.sickLeave.value),
+      militaryYears: numberFrom(elements.militaryYears.value),
+      specialCategory: elements.specialCategory.value,
+      retirementSystem: elements.retirementSystem.value,
+      survivorBenefit: elements.survivorBenefit.value,
+      socialSecurity: numberFrom(elements.socialSecurity.value),
+      federalTaxRate: numberFrom(elements.federalTaxRate.value),
+      stateTaxRate: numberFrom(elements.stateTaxRate.value),
+      tspMonthly: numberFrom(elements.tspMonthly.value),
+      otherMonthly: numberFrom(elements.otherMonthly.value),
+      fehbMonthly: numberFrom(elements.fehbMonthly.value),
+      fegliMonthly: numberFrom(elements.fegliMonthly.value),
+    };
+  }
+
+  function renderScenarioCard({ label, age, scenario, isCurrent = false }) {
+    const card = document.createElement("div");
+    card.className = `rounded-lg border p-4 ${isCurrent ? "border-accent bg-accent-soft" : "border-line bg-canvas/50"}`;
+    const monthly = scenario.afterSurvivor / 12;
+    const detail = scenario.mra10Applied
+      ? `Age reduction ${(scenario.ageReduction * 100).toFixed(0)}%`
+      : scenario.supplementEligible
+        ? "Supplement included"
+        : "No MRA+10 reduction";
+
+    card.innerHTML = `
+      <div class="flex items-center justify-between gap-3">
+        <p class="text-sm font-semibold ${isCurrent ? "text-accent" : "text-ink"}">${label}</p>
+        <span class="text-xs font-medium text-muted">Age ${formatAge(age)}</span>
+      </div>
+      <p class="mt-4 text-xl font-semibold tracking-normal text-ink">${currency.format(scenario.afterSurvivor)}</p>
+      <p class="mt-1 text-xs text-muted">${currency.format(monthly)} per month</p>
+      <p class="mt-3 text-xs leading-relaxed text-muted">${detail}</p>
+      <p class="mt-3 text-xs text-muted">${scenario.totalService.toFixed(1)} service years</p>
+    `;
+
+    return card;
+  }
+
+  function renderScenarioSummaryRow({ label, age, scenario }) {
+    const row = document.createElement("div");
+    const monthly = scenario.afterSurvivor / 12;
+    const detail = scenario.mra10Applied
+      ? `${(scenario.ageReduction * 100).toFixed(0)}% reduction`
+      : scenario.supplementEligible
+        ? "Supplement included"
+        : "No reduction";
+
+    row.className =
+      "flex items-start justify-between gap-4 border-b border-line py-3 last:border-b-0 rounded-md px-2 transition hover:bg-canvas/50 focus-visible:outline-2 focus-visible:outline-accent/40 cursor-pointer";
+    row.tabIndex = 0;
+    row.setAttribute("role", "button");
+    row.setAttribute("aria-label", `Apply ${label} scenario, age ${formatAge(age)}`);
+    row.setAttribute("data-scenario-age", String(age));
+    row.innerHTML = `
+      <div>
+        <p class="text-sm font-semibold text-ink">${label}</p>
+        <p class="mt-1 text-xs text-muted">Age ${formatAge(age)} | ${scenario.totalService.toFixed(1)} service years</p>
+      </div>
+      <div class="text-right">
+        <p class="text-sm font-semibold text-ink">${currency.format(scenario.afterSurvivor)}</p>
+        <p class="mt-1 text-xs text-muted">${currency.format(monthly)}/mo | ${detail}</p>
+      </div>
+    `;
+
+    return row;
+  }
+
+  function renderSurvivorComparison(state) {
+    elements.survivorComparison.innerHTML = "";
+
+    const options = [
+      { value: "none", label: "No survivor benefit", reduction: 0 },
+      { value: "partial", label: "Partial survivor benefit", reduction: 0.05 },
+      { value: "full", label: "Full survivor benefit", reduction: 0.1 },
+    ];
+
+    for (const option of options) {
+      const scenario = getScenario({
+        ...state,
+        survivorBenefit: option.value,
+      });
+      const monthly = scenario.afterSurvivor / 12;
+      const row = document.createElement("div");
+
+      row.className =
+        "flex items-start justify-between gap-4 border-b border-line py-3 last:border-b-0 rounded-md px-2 transition hover:bg-canvas/50 focus-visible:outline-2 focus-visible:outline-accent/40 cursor-pointer";
+      row.tabIndex = 0;
+      row.setAttribute("role", "button");
+      row.setAttribute("aria-label", `Apply ${option.label} survivor benefit`);
+      row.setAttribute("data-survivor-benefit", option.value);
+
+      row.innerHTML = `
+        <div>
+          <p class="text-sm font-semibold text-ink">${option.label}</p>
+          <p class="mt-1 text-xs text-muted">${
+            option.reduction > 0
+              ? `${Math.round(option.reduction * 100)}% reduction`
+              : "No reduction"
+          }</p>
+        </div>
+        <div class="text-right">
+          <p class="text-sm font-semibold text-ink">${currency.format(scenario.afterSurvivor)}</p>
+          <p class="mt-1 text-xs text-muted">${currency.format(monthly)}/mo</p>
+        </div>
+      `;
+
+      elements.survivorComparison.appendChild(row);
+    }
+  }
+
+  function render() {
+    const state = getCurrentState();
+    const current = getScenario(state);
+
+    elements.annualPension.textContent = currency.format(current.afterSurvivor);
+    elements.monthlyPension.textContent = currency.format(current.afterSurvivor / 12);
+    elements.quickAnnual.textContent = currency.format(current.afterSurvivor);
+    elements.quickMonthly.textContent = currency.format(current.afterSurvivor / 12);
+    elements.mobileQuickAnnual.textContent = currency.format(current.afterSurvivor);
+    elements.mobileQuickMonthly.textContent = currency.format(current.afterSurvivor / 12);
+    elements.multiplier.textContent = current.multiplierText;
+    elements.afterSurvivor.textContent = currency.format(current.afterSurvivor);
+    elements.supplementEstimate.textContent = currency.format(current.supplement);
+    elements.totalMonthly.textContent = currency.format(current.totalAnnual / 12);
+
+    const fersMonthly = current.totalAnnual / 12;
+    const socialSecurityMonthly = state.age >= 62 ? state.socialSecurity : 0;
+    const combinedGrossMonthly =
+      fersMonthly +
+      socialSecurityMonthly +
+      state.tspMonthly +
+      state.otherMonthly;
+    const federalTax = combinedGrossMonthly * (state.federalTaxRate / 100);
+    const stateTax = combinedGrossMonthly * (state.stateTaxRate / 100);
+    const netMonthly = Math.max(
+      0,
+      combinedGrossMonthly -
+        federalTax -
+        stateTax -
+        state.fehbMonthly -
+        state.fegliMonthly,
+    );
+
+    elements.netMonthly.textContent = currency.format(netMonthly);
+    elements.combinedMonthly.textContent = currency.format(combinedGrossMonthly);
+
+    const isNotFers = state.retirementSystem !== "fers";
+    elements.systemWarning.classList.toggle("hidden", !isNotFers);
+
+    const assumptions = [
+      `High-3 salary: ${currency.format(current.high3)}`,
+      `Creditable service: ${current.totalService.toFixed(1)} years`,
+      `Multiplier: ${current.multiplierText}`,
+      `FERS + Supplement monthly: ${currency.format(fersMonthly)}`,
+      `Projected gross monthly income: ${currency.format(combinedGrossMonthly)}`,
+      `Estimated after-tax monthly income: ${currency.format(netMonthly)}`,
+    ];
+
+    if (isNotFers) {
+      assumptions.push(
+        `${state.retirementSystem.toUpperCase()} employee: verify with OPM. This estimate still uses FERS formulas.`,
+      );
+    }
+
+    if (current.mra10Applied) {
+      assumptions.push(`MRA+10 age reduction: ${(current.ageReduction * 100).toFixed(0)}%`);
+    }
+
+    if (current.survivorReduction > 0) {
+      assumptions.push(`Survivor benefit reduction: ${(current.survivorReduction * 100).toFixed(0)}%`);
+    }
+
+    if (current.supplementEligible) {
+      assumptions.push(`FERS Supplement estimate: ${currency.format(current.supplement)}`);
+    } else if (state.socialSecurity > 0 && state.age < 62) {
+      assumptions.push("FERS Supplement is not included for this eligibility scenario.");
+    } else {
+      assumptions.push("FERS Supplement does not apply at age 62 or later.");
+    }
+
+    elements.assumptions.innerHTML = assumptions
+      .map((text) => `<li>${text}</li>`)
+      .join("");
+
+    elements.scenarioList.innerHTML = "";
+    elements.scenarioSummary.innerHTML = "";
+
+    const mraAge = current.mra;
+    const scenarios = [
+      {
+        label: "Your entry",
+        age: state.age,
+        serviceYears: state.serviceYears,
+        isCurrent: true,
+      },
+      {
+        label: "MRA+10",
+        age: mraAge,
+        serviceYears: projectService(state.serviceYears, state.age, mraAge),
+      },
+      {
+        label: "Age 60",
+        age: 60,
+        serviceYears: projectService(state.serviceYears, state.age, 60),
+      },
+      {
+        label: "Age 62",
+        age: 62,
+        serviceYears: projectService(state.serviceYears, state.age, 62),
+      },
+    ];
+
+    for (const item of scenarios) {
+      const scenario = getScenario({
+        ...state,
+        serviceYears: item.serviceYears,
+        age: item.age,
+      });
+
+      elements.scenarioList.appendChild(
+        renderScenarioCard({
+          label: item.label,
+          age: item.age,
+          scenario,
+          isCurrent: item.isCurrent,
+        }),
+      );
+
+      if (item.label !== "Your entry") {
+        elements.scenarioSummary.appendChild(
+          renderScenarioSummaryRow({
+            label: item.label,
+            age: item.age,
+            scenario,
+          }),
+        );
+      }
+    }
+
+    renderSurvivorComparison(state);
+
+    const mraScenario = getScenario({
+      ...state,
+      serviceYears: projectService(state.serviceYears, state.age, mraAge),
+      age: mraAge,
+    });
+    const age62Scenario = getScenario({
+      ...state,
+      serviceYears: projectService(state.serviceYears, state.age, 62),
+      age: 62,
+    });
+
+    if (state.age < 62) {
+      const annualDifference = age62Scenario.afterSurvivor - mraScenario.afterSurvivor;
+      const differenceDirection = annualDifference >= 0 ? "less" : "more";
+      const differenceAmount = currency.format(Math.abs(annualDifference));
+      const earlierYears = Math.max(0, 62 - mraAge);
+      const yearsText = earlierYears >= 1 ? earlierYears.toFixed(1) : "less than 1";
+
+      if (mraScenario.mra10Applied) {
+        elements.decisionSummary.textContent =
+          `Retiring at ${formatAge(mraAge)} under MRA+10 reduces your annual pension by ${(mraScenario.ageReduction * 100).toFixed(0)}%. Compared with retiring at 62, that is about ${differenceAmount} ${differenceDirection} per year, but payments can start about ${yearsText} years earlier.`;
+      } else {
+        elements.decisionSummary.textContent =
+          `At ${formatAge(mraAge)}, this scenario may avoid the MRA+10 reduction. Compared with retiring at 62, the annual pension is about ${differenceAmount} ${differenceDirection} per year, but payments can start about ${yearsText} years earlier.`;
+      }
+    } else {
+      elements.decisionSummary.textContent =
+        "You are at or past age 62. If you have at least 20 years of service, the 1.1% multiplier can apply and there is no FERS age reduction.";
+    }
+  }
+
+  function getShareState() {
+    return getCurrentState();
+  }
+
+  function applyShareState(state) {
+    if (!state) return;
+    elements.high3.value = state.high3 ?? 100000;
+    elements.serviceYears.value = state.serviceYears ?? 25;
+    elements.retirementAge.value = state.age ?? 62;
+    elements.birthYear.value = state.birthYear ?? 1970;
+    elements.sickLeave.value = state.sickLeaveHours ?? 0;
+    elements.militaryYears.value = state.militaryYears ?? 0;
+    elements.specialCategory.value = state.specialCategory ?? "none";
+    elements.retirementSystem.value = state.retirementSystem ?? "fers";
+    elements.survivorBenefit.value = state.survivorBenefit ?? "none";
+    elements.socialSecurity.value = state.socialSecurity ?? 2000;
+    elements.salaryHistory.value = state.salaryHistory ?? "";
+    elements.federalTaxRate.value = state.federalTaxRate ?? 15;
+    elements.stateTaxRate.value = state.stateTaxRate ?? 5;
+    elements.tspMonthly.value = state.tspMonthly ?? 0;
+    elements.otherMonthly.value = state.otherMonthly ?? 0;
+    elements.fehbMonthly.value = state.fehbMonthly ?? 0;
+    elements.fegliMonthly.value = state.fegliMonthly ?? 0;
+  }
+
+  function restoreFromHash() {
+    const prefix = "#data=";
+    if (!location.hash.startsWith(prefix)) return false;
+
+    try {
+      const state = JSON.parse(decodeURIComponent(location.hash.slice(prefix.length)));
+      applyShareState(state);
+      return true;
+    } catch {
+      history.replaceState(null, "", location.pathname);
+      return false;
+    }
+  }
+
+  function getReportText() {
+    const state = getCurrentState();
+    const scenario = getScenario(state);
+    const fersMonthly = scenario.totalAnnual / 12;
+    const socialSecurityMonthly = state.age >= 62 ? state.socialSecurity : 0;
+    const combinedGrossMonthly =
+      fersMonthly +
+      socialSecurityMonthly +
+      state.tspMonthly +
+      state.otherMonthly;
+    const federalTax = combinedGrossMonthly * (state.federalTaxRate / 100);
+    const stateTax = combinedGrossMonthly * (state.stateTaxRate / 100);
+    const netMonthly = Math.max(
+      0,
+      combinedGrossMonthly -
+        federalTax -
+        stateTax -
+        state.fehbMonthly -
+        state.fegliMonthly,
+    );
+
+    const mraAge = getMRA(state.birthYear);
+    const comparison = [
+      { label: "MRA+10", age: mraAge },
+      { label: "Age 60", age: 60 },
+      { label: "Age 62", age: 62 },
+    ].map(({ label, age }) => {
+      const comparisonScenario = getScenario({
+        ...state,
+        serviceYears: projectService(state.serviceYears, state.age, age),
+        age,
+      });
+
+      return `${label} (age ${formatAge(age)}): ${currency.format(
+        comparisonScenario.afterSurvivor,
+      )}/year, ${currency.format(comparisonScenario.afterSurvivor / 12)}/month`;
+    });
+
+    return [
+      "FERS Retirement Calculator estimate",
+      `Prepared: ${lastReviewed}`,
+      "Source: OPM FERS Computation",
+      "",
+      `Annual FERS pension: ${currency.format(scenario.afterSurvivor)}`,
+      `Monthly FERS + Supplement: ${currency.format(fersMonthly)}`,
+      `Projected gross monthly income: ${currency.format(combinedGrossMonthly)}`,
+      `Estimated after-tax monthly income: ${currency.format(netMonthly)}`,
+      `Multiplier: ${scenario.multiplierText}`,
+      `Creditable service: ${scenario.totalService.toFixed(1)} years`,
+      "",
+      "Retirement age comparison:",
+      ...comparison,
+    ].join("\n");
+  }
+
+  elements.advancedToggle.addEventListener("click", () => {
+    const isOpen = elements.advancedFields.classList.toggle("hidden");
+    elements.advancedToggle.setAttribute("aria-expanded", String(!isOpen));
+  });
+
+  function applyScenarioAge(age) {
+    const min = Number.parseFloat(elements.retirementAge.min) || 50;
+    const max = Number.parseFloat(elements.retirementAge.max) || 70;
+    const nextAge = Math.min(max, Math.max(min, age));
+
+    elements.retirementAge.value = String(Math.round(nextAge * 100) / 100);
+    render();
+  }
+
+  elements.scenarioSummary.addEventListener("click", (event) => {
+    const row = event.target.closest("[data-scenario-age]");
+    if (!row) return;
+    applyScenarioAge(Number.parseFloat(row.getAttribute("data-scenario-age")));
+  });
+
+  elements.scenarioSummary.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+
+    const row = event.target.closest("[data-scenario-age]");
+    if (!row) return;
+
+    event.preventDefault();
+    applyScenarioAge(Number.parseFloat(row.getAttribute("data-scenario-age")));
+  });
+
+  function applySurvivorBenefit(value) {
+    elements.survivorBenefit.value = value;
+    render();
+  }
+
+  elements.survivorComparison.addEventListener("click", (event) => {
+    const row = event.target.closest("[data-survivor-benefit]");
+    if (!row) return;
+    applySurvivorBenefit(row.getAttribute("data-survivor-benefit"));
+  });
+
+  elements.survivorComparison.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+
+    const row = event.target.closest("[data-survivor-benefit]");
+    if (!row) return;
+
+    event.preventDefault();
+    applySurvivorBenefit(row.getAttribute("data-survivor-benefit"));
+  });
+
+  elements.calculateButton.addEventListener("click", render);
+
+  elements.resetButton.addEventListener("click", () => {
+    applyShareState({
+      high3: 100000,
+      serviceYears: 25,
+      age: 62,
+      birthYear: 1970,
+      sickLeaveHours: 0,
+      militaryYears: 0,
+      specialCategory: "none",
+      retirementSystem: "fers",
+      survivorBenefit: "none",
+      socialSecurity: 2000,
+      salaryHistory: "",
+      federalTaxRate: 15,
+      stateTaxRate: 5,
+      tspMonthly: 0,
+      otherMonthly: 0,
+      fehbMonthly: 0,
+      fegliMonthly: 0,
+    });
+    render();
+  });
+
+  elements.shareButton.addEventListener("click", async () => {
+    const shareUrl = `${location.origin}${location.pathname}#data=${encodeURIComponent(JSON.stringify(getShareState()))}`;
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      elements.shareButton.querySelector("i").className = "ph ph-check-circle text-lg";
+      window.setTimeout(() => {
+        elements.shareButton.querySelector("i").className = "ph ph-share-network text-lg";
+      }, 1400);
+    } catch {
+      elements.shareButton.title = shareUrl;
+    }
+  });
+
+  elements.applyHigh3.addEventListener("click", () => {
+    const estimatedHigh3 = computeHigh3FromHistory(elements.salaryHistory.value);
+
+    if (estimatedHigh3 === null) {
+      elements.high3HelperResult.textContent =
+        "Enter at least one annual salary to calculate High-3.";
+      return;
+    }
+
+    elements.high3.value = Math.round(estimatedHigh3);
+    elements.high3HelperResult.textContent = `Estimated High-3: ${currency.format(estimatedHigh3)}`;
+    render();
+  });
+
+  elements.copySummaryButton.addEventListener("click", async () => {
+    const summary = getReportText();
+
+    try {
+      await navigator.clipboard.writeText(summary);
+      elements.copySummaryButton.querySelector("i").className = "ph ph-check-circle text-lg";
+      window.setTimeout(() => {
+        elements.copySummaryButton.querySelector("i").className = "ph ph-copy text-lg";
+      }, 1400);
+    } catch {
+      elements.copySummaryButton.title = summary;
+    }
+  });
+
+  elements.downloadReportButton.addEventListener("click", () => {
+    const summary = getReportText();
+    const blob = new Blob([summary], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `fers-retirement-estimate-${lastReviewed}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  elements.embedButton.addEventListener("click", async () => {
+    const shareUrl = `${location.origin}/embed#data=${encodeURIComponent(JSON.stringify(getShareState()))}`;
+    const embedCode = `<iframe src="${shareUrl}" title="FERS Retirement Calculator" width="100%" height="720" loading="lazy" style="border:0;"></iframe>`;
+
+    try {
+      await navigator.clipboard.writeText(embedCode);
+      elements.embedButton.querySelector("i").className = "ph ph-check-circle text-lg";
+      window.setTimeout(() => {
+        elements.embedButton.querySelector("i").className = "ph ph-code-simple text-lg";
+      }, 1400);
+    } catch {
+      elements.embedButton.title = embedCode;
+    }
+  });
+
+  elements.printReportButton.addEventListener("click", () => {
+    window.print();
+  });
+
+  const inputElements = [
+    elements.high3,
+    elements.serviceYears,
+    elements.retirementAge,
+    elements.birthYear,
+    elements.sickLeave,
+    elements.militaryYears,
+    elements.specialCategory,
+    elements.retirementSystem,
+    elements.survivorBenefit,
+    elements.socialSecurity,
+    elements.federalTaxRate,
+    elements.stateTaxRate,
+    elements.tspMonthly,
+    elements.otherMonthly,
+    elements.fehbMonthly,
+    elements.fegliMonthly,
+  ];
+
+  for (const input of inputElements) {
+    input.addEventListener("input", render);
+    input.addEventListener("change", render);
+  }
+
+  const restored = restoreFromHash();
+  if (!restored) {
+    render();
+  } else {
+    render();
+  }
+</script>

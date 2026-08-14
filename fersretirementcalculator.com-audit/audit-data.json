@@ -1,0 +1,261 @@
+{
+  "summary": {
+    "health_score": 87,
+    "business_type": "Online calculator / educational tool (FinanceApplication, YMYL-adjacent)",
+    "top_findings": [
+      "fersretirementcalculator.com does not resolve yet, so the site is not live or indexable.",
+      "Security headers are absent from the current build (HSTS, CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy).",
+      "No named author or reviewer with credentials, which weakens E-E-A-T for finance-adjacent content.",
+      "The salary history textarea has no accessible name.",
+      "Several mobile tap targets are below the 44px recommended minimum."
+    ],
+    "quick_wins": [
+      "Configure DNS, TLS, and security headers at the production host before launch.",
+      "Add an aria-label or associated label to the salary history textarea.",
+      "Increase vertical hit area for mobile navigation and FAQ summary rows.",
+      "Redirect trailing-slash variants such as /embed/ to their canonical paths.",
+      "Add a named author/reviewer and a proper Organization logo to strengthen E-E-A-T and schema."
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 80,
+      "what_works": [
+        "robots.txt is present, allows all crawlers, and references the sitemap.",
+        "sitemap.xml is valid and includes the canonical homepage.",
+        "Canonical URLs are correct on both / and /embed.",
+        "Content is server-rendered in the HTML, so crawlers do not depend on JavaScript.",
+        "The /embed page is correctly noindex, nofollow.",
+        "No duplicate content or broken internal anchor links were found."
+      ],
+      "findings": [
+        {
+          "title": "Domain does not resolve",
+          "severity": "Critical",
+          "description": "fersretirementcalculator.com has no DNS A record, so HTTPS requests fail and the site is not live or crawlable.",
+          "recommendation": "Point DNS to the production host, provision a valid TLS certificate, and verify HTTPS before submitting to search engines."
+        },
+        {
+          "title": "Security headers missing",
+          "severity": "High",
+          "description": "The response for / contains no HSTS, Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, or Permissions-Policy headers.",
+          "recommendation": "Add these headers at the CDN or hosting layer before launch. Astro preview intentionally omits them."
+        },
+        {
+          "title": "Trailing slash on /embed returns 404",
+          "severity": "Low",
+          "description": "GET /embed/ returns 404 while the canonical is /embed. A stray trailing slash can create crawl confusion and poor user experience.",
+          "recommendation": "Configure a 301 redirect from /embed/ to /embed at the host or add a redirect rule."
+        },
+        {
+          "title": "No hreflang for a single-language page",
+          "severity": "Info",
+          "description": "The page is English only and declares lang=en, but no hreflang/x-default annotations are present.",
+          "recommendation": "Optional unless additional language variants are introduced. Add x-default only if multilingual pages ship."
+        },
+        {
+          "title": "Production caching not configured",
+          "severity": "Info",
+          "description": "The local preview returns Cache-Control: no-cache for static files, which is expected for preview but not for production.",
+          "recommendation": "Enable immutable caching for hashed assets and a reasonable cache policy for HTML at the production host."
+        }
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 84,
+      "what_works": [
+        "The page contains about 21,000 characters of visible, original, topic-focused text.",
+        "OPM sources are cited, and the page includes editorial standards, a disclaimer, and a last-reviewed date.",
+        "FAQ answers cover real FERS rules with specific examples and formulas.",
+        "No thin or duplicate content was found on the two rendered pages.",
+        "Readability is strong: clear headings, tables, examples, and plain language."
+      ],
+      "findings": [
+        {
+          "title": "No named author or reviewer",
+          "severity": "Medium",
+          "description": "The schema and editorial copy attribute authorship to the Organization, not a person. For finance-adjacent content, named credentials improve trust and E-E-A-T.",
+          "recommendation": "Add a visible author/reviewer with relevant credentials and reference them from the TechArticle schema."
+        },
+        {
+          "title": "Single page only",
+          "severity": "Medium",
+          "description": "The site currently consists of one indexable page. Topical authority and long-tail keyword coverage would benefit from supporting pages.",
+          "recommendation": "Add focused supporting pages for MRA+10, FERS Supplement, survivor benefits, CSRS, and military buyback with internal links back to the calculator."
+        },
+        {
+          "title": "Review signal is date-only",
+          "severity": "Low",
+          "description": "The page says it was reviewed against OPM guidance but does not name a reviewer or link to the review policy.",
+          "recommendation": "Name the reviewer and/or link to a methodology page to make the review claim more credible."
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 90,
+      "what_works": [
+        "Title tag is keyword-front-loaded and within recommended length.",
+        "Meta description is unique, descriptive, and within recommended length.",
+        "Exactly one H1 exists and contains the target keyword.",
+        "Target keyword appears naturally in the H1, title, description, URL, and body.",
+        "Open Graph and Twitter card metadata are complete, including image dimensions and alt text."
+      ],
+      "findings": [
+        {
+          "title": "Very high H3 count",
+          "severity": "Low",
+          "description": "The page contains 52 H3s alongside 23 H2s. This is not penalized, but several card and definition titles could be regular text or definition terms.",
+          "recommendation": "Review H3 usage and demote non-subsection card titles to paragraphs or dt elements where appropriate."
+        },
+        {
+          "title": "No in-content imagery",
+          "severity": "Low",
+          "description": "The page has zero body img elements, so there is no visual asset to reinforce the content or earn image-search traffic.",
+          "recommendation": "Add one or two explanatory diagrams or charts with descriptive alt text near the formula and timeline sections."
+        }
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 90,
+      "what_works": [
+        "A valid JSON-LD @graph is emitted on the homepage.",
+        "WebPage, BreadcrumbList, WebApplication, TechArticle, FAQPage, and Organization types are present.",
+        "FAQPage markup matches visible FAQ content.",
+        "WebApplication includes applicationCategory, featureList, and a free offer.",
+        "TechArticle includes author, publisher, datePublished, and dateModified."
+      ],
+      "findings": [
+        {
+          "title": "Organization logo uses favicon",
+          "severity": "Low",
+          "description": "The Organization logo points to favicon.svg, which is not a proper organization logo asset.",
+          "recommendation": "Create a square, appropriately sized logo and reference it in the Organization schema."
+        },
+        {
+          "title": "No person-level author",
+          "severity": "Low",
+          "description": "TechArticle uses an Organization author. A person-level author or reviewer would improve E-E-A-T and schema richness.",
+          "recommendation": "Add a Person node for the author/reviewer and reference it from the article."
+        },
+        {
+          "title": "WebApplication browser requirement wording",
+          "severity": "Info",
+          "description": "browserRequirements says Requires JavaScript, but the server-rendered page and default estimate work without JavaScript. The interactive calculator does require JavaScript.",
+          "recommendation": "Clarify that the static content is server-rendered while the interactive calculation requires JavaScript."
+        }
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 98,
+      "what_works": [
+        "Lighthouse on the production preview scores performance 100.",
+        "Measured LCP is 400ms locally; FCP is 400ms; CLS is near zero.",
+        "TTFB is 61ms and full load is about 554ms on the local preview.",
+        "The page is very light: four resources and roughly 193KB total transfer.",
+        "No render-blocking third-party scripts or oversized images were found."
+      ],
+      "findings": [
+        {
+          "title": "Dev server metrics are not production",
+          "severity": "Info",
+          "description": "Lighthouse against the dev server showed FCP/LCP above 5s due to Vite on-demand compilation, but the static preview is fast.",
+          "recommendation": "Monitor Core Web Vitals with field data after launch rather than relying on local dev-server runs."
+        }
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 88,
+      "what_works": [
+        "llms.txt is present and lists the calculator and all major sections with production URLs.",
+        "Content is fully server-rendered, so AI crawlers can read it without JavaScript.",
+        "robots.txt allows AI crawlers.",
+        "Clear editorial standards, sources, and limitations make the content easy to cite.",
+        "Headings, FAQ, and tables are well structured for extraction."
+      ],
+      "findings": [
+        {
+          "title": "Thin authority signals for AI citation",
+          "severity": "Low",
+          "description": "The page has an Organization author but no named person, social links, or external authority references beyond OPM.",
+          "recommendation": "Add a named author/reviewer, organization sameAs links, and a concise methodology section to improve citability."
+        },
+        {
+          "title": "No full-content llms.txt variant",
+          "severity": "Info",
+          "description": "The llms.txt is a section index rather than a full machine-readable text dump.",
+          "recommendation": "Optionally add llms-full.txt with the full FAQ and editorial text once the site is live."
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 80,
+      "what_works": [
+        "A 1200x630 OG image exists with correct Open Graph dimensions, type, and alt text.",
+        "No broken img elements were found.",
+        "The OG image is 89KB, which is reasonable for a social preview."
+      ],
+      "findings": [
+        {
+          "title": "No in-content images",
+          "severity": "Low",
+          "description": "The homepage has zero body images, so it lacks visual reinforcement for formula explanations and timelines.",
+          "recommendation": "Add a small number of relevant diagrams or charts with descriptive alt text and width/height attributes."
+        }
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Phase 1: Critical Fixes",
+        "timeframe": "Week 1",
+        "items": [
+          "Configure DNS for fersretirementcalculator.com and provision HTTPS.",
+          "Add security headers at the production host/CDN.",
+          "Add a 301 redirect from /embed/ to /embed.",
+          "Verify robots.txt, sitemap.xml, llms.txt, and OG assets resolve over HTTPS."
+        ]
+      },
+      {
+        "name": "Phase 2: High-Impact Improvements",
+        "timeframe": "Weeks 2-3",
+        "items": [
+          "Add a named author/reviewer with credentials and update schema.",
+          "Add an accessible name to the salary history textarea.",
+          "Increase mobile tap targets for navigation and FAQ rows.",
+          "Replace the Organization favicon logo with a proper logo asset."
+        ]
+      },
+      {
+        "name": "Phase 3: Content & Authority",
+        "timeframe": "Month 2",
+        "items": [
+          "Publish supporting pages for MRA+10, FERS Supplement, survivor benefits, CSRS, and military buyback.",
+          "Add one or two explanatory diagrams to the homepage.",
+          "Add llms-full.txt and an editorial/methodology page."
+        ]
+      },
+      {
+        "name": "Phase 4: Monitoring & Iteration",
+        "timeframe": "Ongoing",
+        "items": [
+          "Submit the sitemap in Search Console and monitor indexation.",
+          "Track Core Web Vitals field data after launch.",
+          "Review crawl stats, impressions, and positions monthly.",
+          "Rebuild the audit baseline after the first production deploy."
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}

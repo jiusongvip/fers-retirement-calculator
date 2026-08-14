@@ -1,0 +1,1382 @@
+---
+import Layout from "../layouts/Layout.astro";
+import FersCalculator from "../components/FersCalculator.astro";
+import RetirementTypeChecker from "../components/RetirementTypeChecker.astro";
+
+const title = "FERS Retirement Calculator: Estimate Your Federal Pension";
+const description =
+  "Free FERS retirement calculator for federal employees. Estimate your pension, FERS Supplement, and survivor benefit, then compare retirement dates.";
+const lastReviewed = "2026-08-14";
+
+const faqs = [
+  {
+    question: "How is the FERS pension calculated?",
+    answer:
+      "The basic FERS annuity uses High-3 Average Salary, years of creditable service, and a multiplier. The standard multiplier is 1% per year. If you retire at age 62 or later with at least 20 years of service, the multiplier rises to 1.1%. Special category employees such as law enforcement officers, firefighters, and air traffic controllers use 1.7% for the first 20 years and 1% thereafter.",
+  },
+  {
+    question: "What is the High-3 Average Salary?",
+    answer:
+      "High-3 is the highest average basic pay you earned during any 36 consecutive months of federal service. For most employees, this is the final three years before retirement. It includes basic pay and locality pay, but excludes overtime, bonuses, and most premium pay. Check OPM guidance for the exact pay types included in your situation.",
+  },
+  {
+    question: "Does unused sick leave increase my FERS pension?",
+    answer:
+      "Yes. Unused sick leave is converted to creditable service when your annuity is computed. OPM uses a factor of 2,087 hours per year. Sick leave credit can increase the service figure used in the pension formula, but it does not make you eligible to retire earlier.",
+  },
+  {
+    question: "What is the FERS MRA+10 retirement?",
+    answer:
+      "MRA+10 allows you to retire at your Minimum Retirement Age with at least 10 years of service, but your annuity may be reduced if you begin benefits before age 62. The reduction is 5% per year under age 62, applied by full months as 5/12 of 1% per month. The reduction is avoided with 30 years of service, or with 20 years of service when benefits begin at age 60.",
+  },
+  {
+    question: "What is the FERS Special Retirement Supplement?",
+    answer:
+      "The FERS Supplement is an extra payment that may be paid to eligible federal employees who retire before age 62. It is not Social Security and stops at age 62. This calculator uses an approximate method: your estimated Social Security benefit at 62 multiplied by your FERS service years divided by 40. The result is only an estimate and can be reduced by earned income in some cases.",
+  },
+  {
+    question: "How does the survivor benefit reduce my FERS annuity?",
+    answer:
+      "A full survivor benefit usually reduces your annuity by 10% and provides your spouse with 50% of your unreduced annuity after your death. A partial survivor benefit usually reduces your annuity by 5% and provides 25%. Choosing no survivor benefit leaves your own annuity unreduced but provides no spouse benefit.",
+  },
+  {
+    question: "Does this calculator account for military service buyback?",
+    answer:
+      "Yes. The advanced Military Buyback Years field is meant for military time for which you have paid a deposit. Do not enter military time that has not been credited through the buyback process.",
+  },
+  {
+    question: "What is the difference between deferred and postponed retirement?",
+    answer:
+      "A deferred retirement is for employees who leave federal service before qualifying for an immediate annuity and collect later. A postponed retirement is for employees who already qualify for an immediate annuity but delay beginning it, often to reduce the MRA+10 age penalty. Postponed retirement may also allow FEHB coverage to resume later, while deferred retirement generally does not.",
+  },
+  {
+    question: "Does this calculator work for CSRS or CSRS-Offset employees?",
+    answer:
+      "No, not reliably. This calculator uses FERS formulas. CSRS and CSRS-Offset have different multipliers and eligibility rules. If you are in one of those systems, use the system selector for a warning and verify your estimate with OPM or your HR office.",
+  },
+  {
+    question: "Should I include Social Security and TSP when planning my FERS retirement?",
+    answer:
+      "Yes. FERS is a predictable pension, but most federal employees should view it alongside Social Security and TSP. This calculator now includes a projected monthly income section that combines FERS, Supplement, Social Security, TSP, and other income.",
+  },
+  {
+    question: "What is the FERS COLA?",
+    answer:
+      "FERS cost-of-living adjustments help protect the purchasing power of your annuity, but eligibility and timing depend on your retirement type. This page explains COLA at a high level. For a formal calculation, check OPM guidance and your retirement records.",
+  },
+  {
+    question: "What is included in my High-3 salary?",
+    answer:
+      "High-3 generally includes basic pay and locality pay. It excludes overtime, bonuses, cash awards, travel reimbursements, and most premium pay. OPM looks at every possible 36 consecutive months of service and uses the highest average.",
+  },
+  {
+    question: "How much service credit does my unused sick leave provide?",
+    answer:
+      "Unused sick leave is converted using a factor of 2,087 hours per year. For example, 520 hours is about 3 months, 1,040 hours is about 6 months, and 2,087 hours is about 1 year. Sick leave credit increases the pension calculation but does not make you eligible to retire earlier.",
+  },
+  {
+    question: "What are the survivor benefit choices for FERS?",
+    answer:
+      "No survivor benefit leaves your annuity unreduced but provides no spouse benefit. Partial survivor benefit usually reduces your annuity by 5% and provides 25% of the unreduced annuity. Full survivor benefit usually reduces your annuity by 10% and provides 50%.",
+  },
+  {
+    question: "Can the FERS Supplement be reduced by earned income?",
+    answer:
+      "Yes. The FERS Special Retirement Supplement is subject to an earnings test before age 62. If your earned income exceeds the annual limit, the Supplement can be reduced or eliminated. This calculator estimates the Supplement but does not apply the earnings test.",
+  },
+  {
+    question: "When should I start the federal retirement application process?",
+    answer:
+      "Start planning 12 to 18 months before retirement. Verify service, High-3, leave balances, and retirement system with HR 6 to 12 months out. Prepare forms and beneficiary choices around 90 days before retirement, then complete the final review before your official retirement date.",
+  },
+  {
+    question: "Is this estimate my official FERS benefit?",
+    answer:
+      "No. This is an educational estimate. Your official annuity is determined by OPM and your agency using your official personnel and pay records. Before making a retirement decision, verify your service computation date, leave balances, and retirement system with your HR office.",
+  },
+  {
+    question: "Can I retire at age 60 with 20 years of FERS service?",
+    answer:
+      "Yes, 20 years of creditable service at age 60 is an immediate FERS retirement age and service combination. It also avoids the MRA+10 age reduction that can apply to earlier retirement. If you retire at 62 or later with at least 20 years of service, the standard multiplier rises from 1.0% to 1.1%.",
+  },
+  {
+    question: "What happens to my unused annual leave when I retire?",
+    answer:
+      "Unused annual leave is typically paid out as a lump sum, subject to agency limits and current law. Annual leave is not converted to creditable service in the same way as unused sick leave. Check with HR before retirement to plan the timing of your departure.",
+  },
+  {
+    question: "How do I start a military service buyback?",
+    answer:
+      "Contact your agency HR or benefits office to request a military deposit estimate. You generally need your DD-214 and the dates of active military service. Paying the deposit makes that military time creditable for FERS eligibility and annuity calculation. Do not enter unpaid military time in the calculator.",
+  },
+  {
+    question: "What is the difference between the FERS Supplement and Social Security?",
+    answer:
+      "The FERS Special Retirement Supplement is paid to certain eligible FERS retirees before age 62. It is not Social Security and ends at age 62. Social Security is a separate benefit you may claim separately, generally from age 62 or later. The calculator estimates the Supplement but does not estimate your Social Security claiming strategy.",
+  },
+  {
+    question: "What documents should I gather before applying for federal retirement?",
+    answer:
+      "Start with your service computation date, personnel actions, recent pay and leave statements, military service records or DD-214 if military buyback applies, beneficiary forms, TSP statements, and any prior federal service records. HR and OPM may also need marriage and dependent documents if you elect a survivor benefit.",
+  },
+  {
+    question: "How often should I review my FERS estimate?",
+    answer:
+      "Review it whenever your High-3 salary, service credit, retirement system, leave balance, or planned retirement date changes. At minimum, update it annually and again 12 to 18 months before retirement, when you should begin verifying official records with HR.",
+  },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://fers-retirement-calculator.com/#webpage",
+      url: "https://fers-retirement-calculator.com/",
+      name: title,
+      description,
+      inLanguage: "en",
+      datePublished: lastReviewed,
+      dateModified: lastReviewed,
+      mainEntity: {
+        "@id": "https://fers-retirement-calculator.com/#app",
+      },
+      about: {
+        "@id": "https://fers-retirement-calculator.com/#app",
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://fers-retirement-calculator.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "FERS Retirement Calculator",
+          item: "https://fers-retirement-calculator.com/#calculator",
+        },
+      ],
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://fers-retirement-calculator.com/#app",
+      name: "FERS Retirement Calculator",
+      url: "https://fers-retirement-calculator.com/",
+      description,
+      inLanguage: "en",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Web",
+      browserRequirements: "Requires JavaScript",
+      isAccessibleForFree: true,
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      featureList: [
+        "FERS pension estimate",
+        "High-3 salary input",
+        "Creditable service calculation",
+        "Unused sick leave conversion",
+        "Military buyback service credit",
+        "Special category multiplier",
+        "Survivor benefit reduction",
+        "Survivor benefit comparison",
+        "FERS Supplement estimate",
+        "MRA+10 comparison",
+        "Retirement age scenario switching",
+        "Shareable estimate link",
+      ],
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://fers-retirement-calculator.com/#article",
+      headline: "How the FERS Retirement Formula Works",
+      description,
+      articleSection: [
+        "FERS formula",
+        "High-3 salary",
+        "Creditable service",
+        "FERS Supplement",
+        "Survivor benefit",
+        "Deferred retirement",
+        "Postponed retirement",
+        "FERS COLA",
+      ],
+      inLanguage: "en",
+      datePublished: lastReviewed,
+      dateModified: lastReviewed,
+      author: {
+        "@id": "https://fers-retirement-calculator.com/#organization",
+      },
+      publisher: {
+        "@id": "https://fers-retirement-calculator.com/#organization",
+      },
+      about: {
+        "@id": "https://fers-retirement-calculator.com/#app",
+      },
+      mainEntityOfPage: {
+        "@id": "https://fers-retirement-calculator.com/#webpage",
+      },
+    },
+    {
+      "@type": "FAQPage",
+      inLanguage: "en",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        inLanguage: "en",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+          inLanguage: "en",
+        },
+      })),
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://fers-retirement-calculator.com/#organization",
+      name: "FERS Retirement Calculator",
+      url: "https://fers-retirement-calculator.com/",
+      logo: "https://fers-retirement-calculator.com/favicon.svg",
+    },
+  ],
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical="https://fers-retirement-calculator.com/"
+  schema={schema}
+  updatedTime={lastReviewed}
+>
+  <section class="pb-12 pt-10 sm:pb-16 sm:pt-14">
+    <div class="page-shell">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">
+          Federal retirement planning
+        </p>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight tracking-normal text-ink sm:text-5xl">
+          FERS Retirement Calculator
+        </h1>
+        <p class="mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+          Estimate your FERS pension, compare retirement dates, and understand the rule behind every number. Free, private, and no sign-up required.
+        </p>
+
+        <div class="mt-6 rounded-lg border border-line bg-surface p-5">
+          <p class="text-sm font-semibold text-ink">Quick answer</p>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            The FERS basic annuity is
+            <span class="font-mono font-semibold text-ink">
+              High-3 × Years of Creditable Service × Multiplier
+            </span>.
+            This calculator also includes unused sick leave, military buyback, special category rules, survivor benefits, FERS Supplement, and a comparison of retiring at MRA+10, 60, or 62.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <FersCalculator lastReviewed={lastReviewed} />
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">How it works</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            Three numbers give you a starting point.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            The basic FERS formula is simple. The detail is in what counts as salary, service, and the right multiplier.
+          </p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-3">
+          <div class="rounded-lg border border-line bg-canvas/50 p-6">
+            <p class="text-lg font-semibold text-accent">01</p>
+            <h3 class="mt-4 text-base font-semibold text-ink">High-3 salary</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              The highest average basic pay from any 36 consecutive months of federal service.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line bg-canvas/50 p-6">
+            <p class="text-lg font-semibold text-accent">02</p>
+            <h3 class="mt-4 text-base font-semibold text-ink">Creditable service</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              FERS-covered years, unused sick leave, and military time after buyback.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line bg-canvas/50 p-6">
+            <p class="text-lg font-semibold text-accent">03</p>
+            <h3 class="mt-4 text-base font-semibold text-ink">Multiplier</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              1%, 1.1%, or special category rates depending on age, service, and position.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-10 rounded-lg border border-line bg-canvas/50 p-6">
+        <h3 class="text-base font-semibold text-ink">How the MRA+10 reduction works</h3>
+        <p class="mt-3 font-mono text-sm font-semibold leading-7 text-accent">
+          Reduction = 5% x full years under age 62 + (5% / 12) x additional months
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          Example: a 57-year-old with 25 years of service begins benefits at MRA. The reduction is 5% x 5 years = 25%. If the unreduced annuity is $25,000, the reduced annual annuity is $18,750.
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          The reduction is avoided with at least 30 years of service, or with at least 20 years of service when benefits begin at age 60.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="formula" class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">FERS formula</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          One formula, three multipliers.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          The basic FERS annuity is High-3 Average Salary multiplied by creditable service multiplied by the correct multiplier.
+        </p>
+        <div class="mt-6 rounded-lg border border-line bg-surface p-6">
+          <p class="font-mono text-sm font-semibold leading-7 text-ink">Annual Pension = High-3 x Service x Multiplier</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Example: a $100,000 High-3 with 25 years of service at the 1.1% multiplier gives $27,500 per year.
+          </p>
+        </div>
+        <img
+          src="/fers-annuity-formula.svg"
+          alt="FERS annuity formula: High-3 average salary times creditable service times multiplier equals annual FERS pension."
+          width="720"
+          height="200"
+          class="mt-6 h-auto w-full max-w-xl rounded-lg border border-line bg-surface"
+        />
+      </div>
+      <div class="overflow-x-auto rounded-lg border border-line bg-surface">
+        <table class="w-full min-w-[640px] text-left text-sm">
+          <thead class="bg-canvas text-muted">
+            <tr>
+              <th class="px-4 py-3 font-semibold">Situation</th>
+              <th class="px-4 py-3 font-semibold">Multiplier</th>
+              <th class="px-4 py-3 font-semibold">When it applies</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Standard FERS</td>
+              <td class="px-4 py-4 text-accent">1.0%</td>
+              <td class="px-4 py-4 text-muted">Most employees who retire before age 62, or at 62+ with less than 20 years.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Enhanced</td>
+              <td class="px-4 py-4 text-accent">1.1%</td>
+              <td class="px-4 py-4 text-muted">Age 62 or later with at least 20 years of service.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Special category</td>
+              <td class="px-4 py-4 text-accent">1.7% / 1.0%</td>
+              <td class="px-4 py-4 text-muted">First 20 years at 1.7%, then 1% for LEO, ATC, firefighters, and nuclear materials couriers.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-3">
+        <div class="flex h-full flex-col rounded-lg border border-line bg-surface p-6">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent-soft text-accent">
+              <i class="ph ph-calculator text-lg" aria-hidden="true"></i>
+            </span>
+            <h3 class="text-base font-semibold text-ink">Standard example</h3>
+          </div>
+          <p class="mt-4 font-mono text-sm font-semibold text-accent">$90,000 x 22 x 1.0%</p>
+          <p class="mt-3 flex-1 text-sm leading-relaxed text-muted">
+            A 58-year-old with 22 years of service receives $19,800 per year before any MRA+10 reduction.
+          </p>
+          <div class="mt-5 flex items-center justify-between rounded-lg bg-canvas/70 px-3 py-2 text-sm">
+            <span class="text-muted">Annual pension</span>
+            <span class="font-semibold text-ink">$19,800</span>
+          </div>
+        </div>
+        <div class="flex h-full flex-col rounded-lg border border-line bg-surface p-6">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent-soft text-accent">
+              <i class="ph ph-trend-up text-lg" aria-hidden="true"></i>
+            </span>
+            <h3 class="text-base font-semibold text-ink">Enhanced example</h3>
+          </div>
+          <p class="mt-4 font-mono text-sm font-semibold text-accent">$110,000 x 24 x 1.1%</p>
+          <p class="mt-3 flex-1 text-sm leading-relaxed text-muted">
+            At age 62 with 24 years of service, the 1.1% multiplier gives $29,040 per year.
+          </p>
+          <div class="mt-5 flex items-center justify-between rounded-lg bg-canvas/70 px-3 py-2 text-sm">
+            <span class="text-muted">Annual pension</span>
+            <span class="font-semibold text-ink">$29,040</span>
+          </div>
+        </div>
+        <div class="flex h-full flex-col rounded-lg border border-line bg-surface p-6">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent-soft text-accent">
+              <i class="ph ph-shield-star text-lg" aria-hidden="true"></i>
+            </span>
+            <h3 class="text-base font-semibold text-ink">Special category example</h3>
+          </div>
+          <p class="mt-4 font-mono text-sm font-semibold text-accent">$95,000 x 20 x 1.7%</p>
+          <p class="mt-3 flex-1 text-sm leading-relaxed text-muted">
+            For the first 20 years, a law enforcement officer receives $32,300 per year before applying the regular 1% multiplier to additional service.
+          </p>
+          <div class="mt-5 flex items-center justify-between rounded-lg bg-canvas/70 px-3 py-2 text-sm">
+            <span class="text-muted">Annual pension</span>
+            <span class="font-semibold text-ink">$32,300</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mra-10" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">MRA+10</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            Early retirement has a cost.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            You can retire at MRA with 10 years of service, but beginning benefits before 62 can reduce your annuity by 5% per year.
+          </p>
+          <div class="mt-6 rounded-lg border border-line bg-canvas/50 p-6">
+            <p class="text-sm font-semibold text-ink">No reduction when:</p>
+            <ul class="mt-3 space-y-2 text-sm leading-relaxed text-muted">
+              <li>You have at least 30 years of service.</li>
+              <li>You have at least 20 years of service and begin at age 60.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="overflow-x-auto rounded-lg border border-line bg-surface">
+          <table class="w-full min-w-[560px] text-left text-sm">
+            <thead class="bg-canvas text-muted">
+              <tr>
+                <th class="px-4 py-3 font-semibold">Birth year</th>
+                <th class="px-4 py-3 font-semibold">Minimum Retirement Age</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-line">
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1970 or later</td>
+                <td class="px-4 py-4 text-muted">57</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1969</td>
+                <td class="px-4 py-4 text-muted">56 years 10 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1965 to 1968</td>
+                <td class="px-4 py-4 text-muted">56 years 2 to 8 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1965</td>
+                <td class="px-4 py-4 text-muted">56 years 2 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1966</td>
+                <td class="px-4 py-4 text-muted">56 years 4 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1967</td>
+                <td class="px-4 py-4 text-muted">56 years 6 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1968</td>
+                <td class="px-4 py-4 text-muted">56 years 8 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1953 to 1964</td>
+                <td class="px-4 py-4 text-muted">56</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1948 to 1952</td>
+                <td class="px-4 py-4 text-muted">55 years 2 to 10 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1952</td>
+                <td class="px-4 py-4 text-muted">55 years 10 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1951</td>
+                <td class="px-4 py-4 text-muted">55 years 8 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1950</td>
+                <td class="px-4 py-4 text-muted">55 years 6 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1949</td>
+                <td class="px-4 py-4 text-muted">55 years 4 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1948</td>
+                <td class="px-4 py-4 text-muted">55 years 2 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Before 1948</td>
+                <td class="px-4 py-4 text-muted">55</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="supplement" class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">FERS Supplement</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          A bridge before Social Security.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          Eligible employees who retire before 62 may receive the FERS Special Retirement Supplement. It is not Social Security and ends at age 62.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Who may be eligible</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Employees with immediate retirement eligibility, such as 30 years of service, 20 years at age 60, or certain special category retirements.
+          </p>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Approximate method</h3>
+          <p class="mt-3 font-mono text-sm font-semibold leading-7 text-accent">
+            Social Security at 62 x FERS Years / 40
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            This calculator applies that method only when the entered scenario appears eligible.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-10 rounded-lg border border-line bg-canvas/50 p-6">
+        <h3 class="text-base font-semibold text-ink">Worked example</h3>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          If your estimated Social Security benefit at 62 is $2,000 per month and you have 30 years of FERS service, the approximate supplement is:
+        </p>
+        <p class="mt-3 font-mono text-sm font-semibold leading-7 text-accent">
+          $2,000 x 30 / 40 = $1,500 per month
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          This is an estimate only. The Supplement is subject to an earnings test before age 62 and is not the same as Social Security.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="worked-examples" class="section-pad">
+    <div class="page-shell">
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Worked examples</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          See the FERS formula in action, decision by decision.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          Each example uses the same basic formula but shows how service, age, special provisions, survivor benefits, and other income change the final estimate.
+        </p>
+      </div>
+
+      <div class="mt-10 overflow-x-auto rounded-lg border border-line bg-surface">
+        <table class="w-full min-w-[720px] text-left text-sm">
+          <thead class="bg-canvas text-muted">
+            <tr>
+              <th class="px-4 py-3 font-semibold">Retirement path</th>
+              <th class="px-4 py-3 font-semibold">Typical eligibility</th>
+              <th class="px-4 py-3 font-semibold">Key rule</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Immediate full retirement</td>
+              <td class="px-4 py-4 text-muted">62+ with 5+ years; 60 with 20+; MRA with 30+</td>
+              <td class="px-4 py-4 text-muted">No MRA+10 reduction. 1.1% multiplier applies at 62+ with 20+ years.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">MRA+10</td>
+              <td class="px-4 py-4 text-muted">MRA with 10 to 29 years of service</td>
+              <td class="px-4 py-4 text-muted">Immediate, but usually reduced before age 62 unless an exception applies.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Age 60 with 20+ years</td>
+              <td class="px-4 py-4 text-muted">Age 60 with at least 20 years</td>
+              <td class="px-4 py-4 text-muted">Immediate and no age reduction.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Special category</td>
+              <td class="px-4 py-4 text-muted">LEO, ATC, firefighter, or nuclear materials courier</td>
+              <td class="px-4 py-4 text-muted">1.7% for the first 20 years, then 1.0%.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Deferred retirement</td>
+              <td class="px-4 py-4 text-muted">Left federal service before immediate eligibility</td>
+              <td class="px-4 py-4 text-muted">Collect later. FEHB generally does not continue.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Postponed retirement</td>
+              <td class="px-4 py-4 text-muted">Eligible for immediate retirement but delays benefit start</td>
+              <td class="px-4 py-4 text-muted">May reduce the MRA+10 age penalty and may allow FEHB to resume later.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-10 grid gap-5 md:grid-cols-2">
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Standard FERS example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">$90,000 x 22 x 1.0% = $19,800</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            A 58-year-old with 22 years of service and a $90,000 High-3 receives $19,800 per year before any MRA+10 reduction. Monthly, that is about $1,650.
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Enhanced 1.1% example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">$110,000 x 24 x 1.1% = $29,040</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            At age 62 or later with at least 20 years of service, the 1.1% multiplier increases the annual pension. The difference is permanent and should be part of the 60 vs 62 decision.
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Special category example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">$95,000 x 20 x 1.7% = $32,300</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            For the first 20 years of covered service, an eligible law enforcement officer, firefighter, air traffic controller, or nuclear materials courier receives a higher multiplier. Service beyond 20 years uses 1.0%.
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">MRA+10 reduction example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">$25,000 x (1 - 25%) = $18,750</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            A 57-year-old with 25 years of service begins benefits at MRA. Five years before 62 creates a 25% reduction, reducing a $25,000 unreduced pension to $18,750.
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Survivor benefit example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">$30,000 x 90% = $27,000</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            A full survivor benefit reduces your own annuity by 10%, but provides a continuing spouse benefit after your death. A partial survivor benefit reduces your annuity by 5%.
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">FERS Supplement example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">$2,000 x 30 / 40 = $1,500</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            If the estimated Social Security benefit at 62 is $2,000 per month and you have 30 years of FERS service, the approximate monthly Supplement is $1,500.
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Military buyback example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">22 FERS years + 4 military years = 26 years</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Military time only counts after a military deposit has been paid. Add only the years for which a deposit was completed. Otherwise, the estimate will overstate creditable service.
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Unused sick leave example</h3>
+          <p class="mt-3 font-mono text-sm font-semibold text-accent">1,043.5 hours / 2,087 = 0.5 years</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Unused sick leave is converted to service for pension calculation, but it does not create eligibility. It can increase the final annuity amount by adding fractional years of service.
+          </p>
+        </article>
+      </div>
+
+      <div class="mt-10 rounded-lg border border-line bg-canvas/50 p-6">
+        <h3 class="text-base font-semibold text-ink">Combined monthly income example</h3>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          Suppose your monthly numbers are FERS $2,500, Social Security $1,800, and TSP $900. Your projected gross monthly income is $5,200. Taxes, FEHB, FEGLI, and other deductions reduce the amount available for spending.
+        </p>
+        <p class="mt-3 font-mono text-sm font-semibold text-accent">
+          $2,500 + $1,800 + $900 = $5,200 gross per month
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="social-security" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">Social Security and TSP</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            FERS is only part of your retirement income.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            Most federal retirees combine FERS, Social Security, and TSP. A strong FERS annuity is important, but the full picture depends on all three sources.
+          </p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="rounded-lg border border-line bg-surface p-6">
+            <h3 class="text-base font-semibold text-ink">FERS annuity</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              A predictable pension based on High-3, creditable service, and the correct multiplier.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line bg-surface p-6">
+            <h3 class="text-base font-semibold text-ink">Social Security</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              Generally begins at age 62 or later. The FERS Supplement may bridge part of the gap for eligible early retirees.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line bg-surface p-6">
+            <h3 class="text-base font-semibold text-ink">TSP</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              Your Thrift Savings Plan balance is the flexible piece. Withdrawals can be adjusted based on market conditions and spending needs.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line bg-surface p-6">
+            <h3 class="text-base font-semibold text-ink">Other income</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              Part-time work, rental income, pensions, or taxable investment income can also shape your retirement cash flow.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cola" class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">COLA</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          Inflation changes the purchasing power of your pension.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          FERS cost-of-living adjustments are not the same as Social Security COLA rules. They can help preserve purchasing power, but they should not be treated as guaranteed future income.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">FERS COLA</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Eligibility and timing depend on the retirement type. Special category retirees may receive COLA earlier than standard FERS retirees.
+          </p>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Planning implication</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Even a small difference in COLA can compound over 20 to 30 years. Use conservative assumptions when projecting future retirement income.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="deferred-postponed" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">Retirement types</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            Deferred and postponed are not the same.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            Both allow you to delay an annuity after leaving federal service, but they affect benefits differently. Understanding the difference can save a FERS employee thousands of dollars.
+          </p>
+        </div>
+        <div class="overflow-x-auto rounded-lg border border-line bg-surface">
+          <table class="w-full min-w-[680px] text-left text-sm">
+            <thead class="bg-canvas text-muted">
+              <tr>
+                <th class="px-4 py-3 font-semibold">Item</th>
+                <th class="px-4 py-3 font-semibold">Deferred</th>
+                <th class="px-4 py-3 font-semibold">Postponed</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-line">
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Who can use it</td>
+                <td class="px-4 py-4 text-muted">Employees who leave before qualifying for an immediate annuity.</td>
+                <td class="px-4 py-4 text-muted">Employees who already qualify for an immediate annuity but choose to delay it.</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Health insurance</td>
+                <td class="px-4 py-4 text-muted">FEHB generally does not continue.</td>
+                <td class="px-4 py-4 text-muted">FEHB may resume when the postponed annuity begins.</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Typical use</td>
+                <td class="px-4 py-4 text-muted">Leaving government and waiting until a later age to collect.</td>
+                <td class="px-4 py-4 text-muted">Retiring at MRA+10 or 60+20 and delaying to reduce the age penalty.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="csrs-offset" class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">CSRS and CSRS-Offset</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          Your retirement system changes the formula.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          This page is built around FERS. CSRS and CSRS-Offset employees need different formulas and should verify their numbers with OPM or HR.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">CSRS</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Generally covers employees first hired before 1984 who did not elect FERS. CSRS uses a different multiplier and does not include Social Security in the same way.
+          </p>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">CSRS-Offset</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Combines CSRS-style benefits with Social Security coverage. It is especially easy to confuse with FERS, so the system warning in the calculator should be taken seriously.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <RetirementTypeChecker />
+
+  <section id="special-provisions" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">Special provisions</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            LEO, ATC, firefighters, and nuclear couriers use different rules.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            Special category employees generally qualify for a higher FERS multiplier and may face mandatory retirement earlier than standard FERS employees.
+          </p>
+        </div>
+        <div class="overflow-x-auto rounded-lg border border-line bg-surface">
+          <table class="w-full min-w-[700px] text-left text-sm">
+            <thead class="bg-canvas text-muted">
+              <tr>
+                <th class="px-4 py-3 font-semibold">Category</th>
+                <th class="px-4 py-3 font-semibold">Multiplier</th>
+                <th class="px-4 py-3 font-semibold">Planning note</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-line">
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Law Enforcement Officer</td>
+                <td class="px-4 py-4 text-accent">1.7% / 1.0%</td>
+                <td class="px-4 py-4 text-muted">First 20 years at 1.7%, then 1%. Verify covered LEO service with HR.</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Air Traffic Controller</td>
+                <td class="px-4 py-4 text-accent">1.7% / 1.0%</td>
+                <td class="px-4 py-4 text-muted">ATC employees may also have different age and service requirements.</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Firefighter</td>
+                <td class="px-4 py-4 text-accent">1.7% / 1.0%</td>
+                <td class="px-4 py-4 text-muted">Special provision eligibility depends on covered firefighter service.</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">Nuclear Materials Courier</td>
+                <td class="px-4 py-4 text-accent">1.7% / 1.0%</td>
+                <td class="px-4 py-4 text-muted">Special retirement rules apply. Verify with OPM before relying on an estimate.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="military-buyback" class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Military buyback</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          Military time can count toward your pension.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          Military service generally does not count toward FERS until you complete a military service deposit. Once paid, that time can be added to creditable service.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">What to enter</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Use only military time for which a deposit has been paid or confirmed. Unpaid military time should not be entered as creditable service.
+          </p>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Why it matters</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Military buyback can increase service years and lift the FERS annuity. It may also affect eligibility and the Special Retirement Supplement.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="checklist" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Checklist</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          After the estimate, verify before you decide.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          A calculator gives you a planning number. These checks turn it into a safer retirement decision.
+        </p>
+      </div>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <p class="text-lg font-semibold text-accent">01</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Confirm your retirement system</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">FERS, CSRS, CSRS-Offset, or special category changes the formula and eligibility.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <p class="text-lg font-semibold text-accent">02</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Check service computation date</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Ask HR for your SCD and confirm military buyback, leave credit, and prior federal service.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <p class="text-lg font-semibold text-accent">03</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Verify High-3 salary</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Use your official earnings record to confirm the highest 36 consecutive months of basic pay.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <p class="text-lg font-semibold text-accent">04</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Review survivor benefit</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Compare Full, Partial, and None with your spouse and consider the long-term cost.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <p class="text-lg font-semibold text-accent">05</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Plan FEHB and FEGLI</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Confirm eligibility, premiums, and the effect of your retirement type on health insurance.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <p class="text-lg font-semibold text-accent">06</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Get an official annuity estimate</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Contact HR or OPM when you are close to retirement for a formal estimate based on official records.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="high-3-details" class="section-pad">
+    <div class="page-shell">
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">High-3 explained</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          What actually goes into your High-3
+        </h2>
+        <p class="mt-5 max-w-3xl text-base leading-relaxed text-muted">
+          High-3 is the highest average basic pay you earn during any 36 consecutive months of federal service. It is not necessarily your final salary, and it is not your total compensation.
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Generally included</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-muted">
+            <li>Base salary</li>
+            <li>Locality pay</li>
+            <li>Basic pay earned during the qualifying 36-month period</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <h3 class="text-base font-semibold text-ink">Generally excluded</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-muted">
+            <li>Overtime</li>
+            <li>Bonuses</li>
+            <li>Cash awards</li>
+            <li>Travel reimbursements</li>
+            <li>Most premium pay</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-6 rounded-lg border border-line bg-surface p-6">
+        <h3 class="text-base font-semibold text-ink">How to think about the 36-month window</h3>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
+          OPM looks at every possible consecutive 36-month period in your career and uses the highest average. That means an earlier period could be higher than your final years if you took a lower-paying position late in your career. A promotion or step increase inside the highest window can lift the average and increase your pension for life.
+        </p>
+      </div>
+
+      <div class="mt-6 rounded-lg border border-line bg-canvas/50 p-6">
+        <h3 class="text-base font-semibold text-ink">Step-by-step example</h3>
+        <div class="mt-4 grid gap-4 md:grid-cols-3">
+          <div class="rounded-lg border border-line bg-surface p-4">
+            <p class="text-sm font-semibold text-ink">Year 1</p>
+            <p class="mt-2 font-mono text-sm font-semibold text-accent">$95,000</p>
+          </div>
+          <div class="rounded-lg border border-line bg-surface p-4">
+            <p class="text-sm font-semibold text-ink">Year 2</p>
+            <p class="mt-2 font-mono text-sm font-semibold text-accent">$100,000</p>
+          </div>
+          <div class="rounded-lg border border-line bg-surface p-4">
+            <p class="text-sm font-semibold text-ink">Year 3</p>
+            <p class="mt-2 font-mono text-sm font-semibold text-accent">$98,000</p>
+          </div>
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-muted">
+          The three-year average is ($95,000 + $100,000 + $98,000) / 3 = $97,667. This becomes the High-3 salary used in the annuity formula.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sick-leave-credit" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">Sick leave credit</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            Unused sick leave raises the pension, not eligibility.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            Unused sick leave is converted to creditable service for annuity computation, but it cannot be used to meet minimum service requirements.
+          </p>
+        </div>
+        <div class="overflow-x-auto rounded-lg border border-line bg-surface">
+          <table class="w-full min-w-[560px] text-left text-sm">
+            <thead class="bg-canvas text-muted">
+              <tr>
+                <th class="px-4 py-3 font-semibold">Sick leave balance</th>
+                <th class="px-4 py-3 font-semibold">Approximate service credit</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-line">
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">520 hours</td>
+                <td class="px-4 py-4 text-muted">About 3 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1,040 hours</td>
+                <td class="px-4 py-4 text-muted">About 6 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">1,560 hours</td>
+                <td class="px-4 py-4 text-muted">About 9 months</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 font-semibold text-ink">2,087 hours</td>
+                <td class="px-4 py-4 text-muted">About 1 year</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="survivor-benefit-details" class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Survivor benefit</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          A pension choice with long-term consequences.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          Electing a survivor benefit reduces your own annuity during your lifetime but provides continuing income to your spouse after your death.
+        </p>
+      </div>
+      <div class="overflow-x-auto rounded-lg border border-line bg-surface">
+        <table class="w-full min-w-[680px] text-left text-sm">
+          <thead class="bg-canvas text-muted">
+            <tr>
+              <th class="px-4 py-3 font-semibold">Choice</th>
+              <th class="px-4 py-3 font-semibold">Your reduction</th>
+              <th class="px-4 py-3 font-semibold">Spouse benefit</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">No survivor benefit</td>
+              <td class="px-4 py-4 text-muted">0%</td>
+              <td class="px-4 py-4 text-muted">No spouse annuity</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Partial survivor benefit</td>
+              <td class="px-4 py-4 text-muted">5%</td>
+              <td class="px-4 py-4 text-muted">25% of the unreduced annuity</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-4 font-semibold text-ink">Full survivor benefit</td>
+              <td class="px-4 py-4 text-muted">10%</td>
+              <td class="px-4 py-4 text-muted">50% of the unreduced annuity</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="fers-supplement-details" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">FERS Supplement details</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            When the Supplement applies, and when it can be reduced.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            The FERS Special Retirement Supplement is not Social Security and is not paid automatically to every federal retiree.
+          </p>
+        </div>
+        <div class="grid gap-4">
+          <div class="rounded-lg border border-line bg-surface p-6">
+            <h3 class="text-base font-semibold text-ink">Typical eligibility</h3>
+            <ul class="mt-3 space-y-2 text-sm leading-relaxed text-muted">
+              <li>Immediate retirement before age 62</li>
+              <li>30 years of service, 20 years at age 60, or special category eligibility</li>
+              <li>Entitled to a Social Security benefit</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-line bg-surface p-6">
+            <h3 class="text-base font-semibold text-ink">Important limitation</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">
+              The Supplement is subject to an earnings test before age 62. Earning too much can reduce or eliminate the payment for that year. This calculator uses an approximate method and does not calculate the earnings test.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="application-timeline" class="section-pad">
+    <div class="page-shell">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Application timeline</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          From estimate to first annuity payment
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          This is a general planning sequence. Your agency and OPM will set the official deadlines.
+        </p>
+      </div>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <p class="text-lg font-semibold text-accent">12 to 18 months</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Start planning</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Review service, High-3, leave balances, TSP, and retirement goals.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <p class="text-lg font-semibold text-accent">6 to 12 months</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Verify records</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Ask HR to review SCD, retirement system, military deposits, and leave balances.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <p class="text-lg font-semibold text-accent">90 days</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Prepare paperwork</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Complete agency retirement forms and review beneficiary, FEHB, and FEGLI choices.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <p class="text-lg font-semibold text-accent">Retirement month</p>
+          <h3 class="mt-4 text-base font-semibold text-ink">Final review</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Confirm final salary, leave, and annuity estimate before the official processing date.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="glossary" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Glossary</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          FERS terms explained
+        </h2>
+        <p class="mt-5 max-w-3xl text-base leading-relaxed text-muted">
+          These definitions map directly to the calculator and the sections above.
+        </p>
+      </div>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <h3 class="text-base font-semibold text-ink">High-3</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">The highest average basic pay from any 36 consecutive months of federal service.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <h3 class="text-base font-semibold text-ink">Creditable service</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">Service used in the annuity formula, including eligible federal and military service.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <h3 class="text-base font-semibold text-ink">MRA</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">Minimum Retirement Age. It depends on year of birth.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <h3 class="text-base font-semibold text-ink">FERS Supplement</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">A bridge payment for some eligible retirees before age 62.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <h3 class="text-base font-semibold text-ink">TSP</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">Thrift Savings Plan, the federal employee defined contribution savings plan.</p>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas/50 p-6">
+          <h3 class="text-base font-semibold text-ink">SCD</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">Service Computation Date, used to determine service credit and eligibility.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Sources</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          Built from OPM guidance.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          Verify the latest rules directly with OPM and your agency HR office.
+        </p>
+        <ul class="mt-6 grid gap-3 text-sm leading-relaxed text-muted">
+          <li>
+            <a
+              href="https://www.opm.gov/retirement-center/fers-information/computation/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-primary hover:underline"
+            >
+              OPM FERS Computation
+            </a>
+            <span class="text-muted"> - official FERS formula and multiplier rules.</span>
+          </li>
+          <li>
+            <a
+              href="https://www.opm.gov/retirement-center/calculators/federal-ball-park-estimator/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-primary hover:underline"
+            >
+              OPM Federal Ball Park Estimator
+            </a>
+            <span class="text-muted"> - broader federal retirement planning estimate.</span>
+          </li>
+          <li>
+            <a
+              href="https://www.ssa.gov/benefits/retirement/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-primary hover:underline"
+            >
+              Social Security Administration
+            </a>
+            <span class="text-muted"> - official Social Security retirement benefit information.</span>
+          </li>
+          <li>
+            <a
+              href="https://www.tsp.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-primary hover:underline"
+            >
+              Thrift Savings Plan
+            </a>
+            <span class="text-muted"> - official TSP account and withdrawal information.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="editorial" class="section-pad">
+    <div class="page-shell">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Editorial standards</p>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+          How this page is maintained.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-muted">
+          We check the formulas against OPM's FERS Computation guidance. Last reviewed: {lastReviewed}.
+        </p>
+        <p class="mt-3 text-base leading-relaxed text-muted">
+          This tool is built and reviewed by the FERS Retirement Calculator editorial team. It is not affiliated with OPM.
+        </p>
+
+        <h3 class="mt-6 text-base font-semibold text-ink">How we verify the calculator</h3>
+        <ul class="mt-3 grid gap-2 text-sm leading-relaxed text-muted">
+          <li>We check the annuity formula and multipliers against OPM's FERS Computation guidance.</li>
+          <li>We use 2,087 hours for one year of unused sick leave.</li>
+          <li>We test MRA+10, age 60, and age 62 scenarios by hand before publishing changes.</li>
+          <li>We review this page at least once a year and update the review date when we make changes.</li>
+        </ul>
+
+        <h3 class="mt-6 text-base font-semibold text-ink">Privacy</h3>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          This calculator runs entirely in your browser. It does not collect, store, or send the numbers you enter.
+        </p>
+
+        <h3 class="mt-6 text-base font-semibold text-ink">What this page does not calculate</h3>
+        <ul class="mt-3 grid gap-2 text-sm leading-relaxed text-muted">
+          <li>Deferred or postponed retirement amounts beyond the guidance shown above.</li>
+          <li>CSRS or CSRS-Offset pension amounts using their official formulas.</li>
+          <li>Final tax advice, FEHB/FEGLI enrollment decisions, or an official OPM determination.</li>
+          <li>Disability retirement or complex disability annuity rules.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="border-t border-line bg-surface">
+    <div class="page-shell section-pad">
+      <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-normal text-accent">FAQ</p>
+          <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+            Frequently asked questions
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-muted">
+            The answers behind the calculator and the federal retirement rules that shape your estimate.
+          </p>
+        </div>
+        <div class="divide-y divide-line border-y border-line">
+          {
+            faqs.map((faq) => (
+              <details class="group py-5">
+                <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-6 text-left text-base font-semibold text-ink">
+                  {faq.question}
+                  <span class="text-xl font-normal text-muted transition group-open:rotate-45">+</span>
+                </summary>
+                <p class="mt-4 max-w-3xl text-sm leading-relaxed text-muted">{faq.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="disclaimer" class="border-t border-line bg-canvas">
+    <div class="page-shell section-pad">
+      <div class="max-w-3xl rounded-lg border border-line bg-surface p-6">
+        <p class="text-sm font-semibold uppercase tracking-normal text-accent">Disclaimer</p>
+        <p class="mt-4 text-sm leading-relaxed text-muted">
+          This is an independent educational estimate, not an official OPM benefit determination. FERS rules and amounts can vary based on your official service record, agency, special provisions, and current law. Before making a retirement decision, verify your numbers with your HR office and OPM.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

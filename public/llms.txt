@@ -1,0 +1,35 @@
+# FERS Retirement Calculator
+
+> A free, browser-based educational estimator for federal employees. It explains FERS pension rules and estimates retirement income without requiring an account.
+
+- [FERS Retirement Calculator](https://fers-retirement-calculator.com/)
+- [Calculator](https://fers-retirement-calculator.com/#calculator)
+- [FERS formula](https://fers-retirement-calculator.com/#formula)
+- [MRA+10](https://fers-retirement-calculator.com/#mra-10)
+- [FERS Supplement](https://fers-retirement-calculator.com/#supplement)
+- [Worked examples](https://fers-retirement-calculator.com/#worked-examples)
+- [Social Security and TSP](https://fers-retirement-calculator.com/#social-security)
+- [COLA](https://fers-retirement-calculator.com/#cola)
+- [Deferred vs postponed](https://fers-retirement-calculator.com/#deferred-postponed)
+- [CSRS and CSRS-Offset](https://fers-retirement-calculator.com/#csrs-offset)
+- [Retirement type checker](https://fers-retirement-calculator.com/#retirement-type-checker)
+- [Special provisions](https://fers-retirement-calculator.com/#special-provisions)
+- [Military buyback](https://fers-retirement-calculator.com/#military-buyback)
+- [High-3 explained](https://fers-retirement-calculator.com/#high-3-details)
+- [Sick leave credit](https://fers-retirement-calculator.com/#sick-leave-credit)
+- [Survivor benefit details](https://fers-retirement-calculator.com/#survivor-benefit-details)
+- [FERS Supplement details](https://fers-retirement-calculator.com/#fers-supplement-details)
+- [Application timeline](https://fers-retirement-calculator.com/#application-timeline)
+- [Glossary](https://fers-retirement-calculator.com/#glossary)
+- [Retirement checklist](https://fers-retirement-calculator.com/#checklist)
+- [Editorial standards](https://fers-retirement-calculator.com/#editorial)
+- [FAQ](https://fers-retirement-calculator.com/#faq)
+- [Sources](https://fers-retirement-calculator.com/#sources)
+
+## What this page does
+
+The page calculates the basic FERS annuity and supports advanced inputs for unused sick leave, military buyback, special category multipliers, survivor benefits, and the FERS Special Retirement Supplement.
+
+## Important limitation
+
+This is an independent educational estimate. It is not an official OPM benefit determination. Federal employees should verify their numbers with HR and OPM.

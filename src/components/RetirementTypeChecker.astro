@@ -1,0 +1,83 @@
+---
+const systemMessages = {
+  fers: "FERS uses the 1%, 1.1%, and special category multipliers described above. The calculator on this page is designed for FERS.",
+  csrs: "CSRS generally covers employees first hired before 1984 who did not elect FERS. It uses different multipliers and does not include Social Security in the same way.",
+  "csrs-offset": "CSRS-Offset combines CSRS-style benefits with Social Security coverage. It is easy to confuse with FERS, so verify the estimate with OPM or HR.",
+  "not-sure": "Ask HR for your retirement system and service computation date. The retirement system changes the formula and eligibility rules.",
+};
+
+const separationMessages = {
+  "still-employed": "If you are still employed and meet age and service requirements, you may qualify for an immediate FERS retirement. Use the calculator above and verify with HR.",
+  deferred: "Deferred retirement generally applies when you leave federal service before qualifying for an immediate annuity and collect later. FEHB generally does not continue.",
+  postponed: "Postponed retirement generally applies when you already qualify for an immediate annuity but delay starting it, often to reduce the MRA+10 age penalty. FEHB may resume when the annuity begins.",
+  "not-sure": "Choose the closest situation, then confirm with OPM or your HR office before making a decision.",
+};
+---
+
+<section id="retirement-type-checker" class="border-t border-line bg-surface">
+  <div class="page-shell section-pad">
+    <div class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-normal text-accent">Retirement type checker</p>
+      <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink sm:text-4xl">
+        Quick check: deferred, postponed, or direct retirement.
+      </h2>
+      <p class="mt-5 text-base leading-relaxed text-muted">
+        Choose the closest situation. This is educational guidance, not an official determination.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <label class="block">
+          <span class="text-sm font-semibold text-ink">Retirement system</span>
+          <select id="rt-system" class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary">
+            <option value="fers">FERS</option>
+            <option value="csrs">CSRS</option>
+            <option value="csrs-offset">CSRS-Offset</option>
+            <option value="not-sure">Not sure</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="text-sm font-semibold text-ink">Separation situation</span>
+          <select id="rt-separation" class="mt-2 w-full rounded-lg border border-line bg-canvas px-3 py-3 text-base font-semibold text-ink outline-none focus:border-primary">
+            <option value="still-employed">Still employed</option>
+            <option value="deferred">Left before qualifying and will collect later</option>
+            <option value="postponed">Qualified but delaying my benefit start</option>
+            <option value="not-sure">Not sure</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="rt-result" class="mt-5 rounded-lg border border-line bg-canvas/50 p-5 text-sm leading-relaxed text-muted" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const systemMessages = {
+    fers: "FERS uses the 1%, 1.1%, and special category multipliers described above. The calculator on this page is designed for FERS.",
+    csrs: "CSRS generally covers employees first hired before 1984 who did not elect FERS. It uses different multipliers and does not include Social Security in the same way.",
+    "csrs-offset": "CSRS-Offset combines CSRS-style benefits with Social Security coverage. It is easy to confuse with FERS, so verify the estimate with OPM or HR.",
+    "not-sure": "Ask HR for your retirement system and service computation date. The retirement system changes the formula and eligibility rules.",
+  };
+
+  const separationMessages = {
+    "still-employed": "If you are still employed and meet age and service requirements, you may qualify for an immediate FERS retirement. Use the calculator above and verify with HR.",
+    deferred: "Deferred retirement generally applies when you leave federal service before qualifying for an immediate annuity and collect later. FEHB generally does not continue.",
+    postponed: "Postponed retirement generally applies when you already qualify for an immediate annuity but delay starting it, often to reduce the MRA+10 age penalty. FEHB may resume when the annuity begins.",
+    "not-sure": "Choose the closest situation, then confirm with OPM or your HR office before making a decision.",
+  };
+
+  const systemSelect = document.getElementById("rt-system");
+  const separationSelect = document.getElementById("rt-separation");
+  const result = document.getElementById("rt-result");
+
+  function updateResult() {
+    const system = systemMessages[systemSelect.value];
+    const separation = separationMessages[separationSelect.value];
+    result.innerHTML = `<p class="font-semibold text-ink">${system}</p><p class="mt-2">${separation}</p>`;
+  }
+
+  systemSelect.addEventListener("change", updateResult);
+  separationSelect.addEventListener("change", updateResult);
+  updateResult();
+</script>

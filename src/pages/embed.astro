@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import FersCalculator from "../components/FersCalculator.astro";
+
+const title = "FERS Retirement Calculator: Embedded Estimate";
+const description =
+  "Embeddable FERS retirement calculator for federal employees. Estimate your pension without leaving the host page.";
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical="https://fers-retirement-calculator.com/embed"
+  noindex={true}
+  bare={true}
+>
+  <FersCalculator />
+</Layout>

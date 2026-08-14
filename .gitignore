@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+test-results/
+.env
+.env.*
+*.log
+*.err
+*.out
+lighthouse*.json
+desktop.png
+mobile.png

@@ -1,0 +1,127 @@
+---
+import "../styles/global.css";
+import "@phosphor-icons/web/regular/style.css";
+
+const site = "https://fers-retirement-calculator.com";
+const {
+  title,
+  description,
+  canonical = `${site}/`,
+  schema,
+  noindex = false,
+  bare = false,
+  updatedTime = "2026-08-14",
+} = Astro.props;
+
+const navItems = [
+  { href: "#calculator", label: "Calculator" },
+  { href: "#formula", label: "Formula" },
+  { href: "#scenarios", label: "Scenarios" },
+  { href: "#faq", label: "FAQ" },
+];
+
+const footerNavItems = [
+  ...navItems,
+  { href: "#mra-10", label: "MRA+10" },
+  { href: "#supplement", label: "Supplement" },
+  { href: "#worked-examples", label: "Examples" },
+  { href: "#deferred-postponed", label: "Retirement types" },
+  { href: "#csrs-offset", label: "CSRS" },
+  { href: "#checklist", label: "Checklist" },
+  { href: "#sources", label: "Sources" },
+  { href: "#disclaimer", label: "Disclaimer" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#173a52" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="FERS Retirement Calculator" />
+    <meta property="og:image" content={`${site}/og-image.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="FERS Retirement Calculator preview" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:updated_time" content={updatedTime} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${site}/og-image.png`} />
+    <meta name="twitter:image:alt" content="FERS Retirement Calculator preview" />
+    <title>{title}</title>
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+    >
+      Skip to main content
+    </a>
+    {!bare && (
+      <header class="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur">
+        <div class="page-shell flex h-16 items-center justify-between">
+          <a href="#calculator" class="flex items-center gap-2 font-semibold tracking-normal text-ink">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
+              <i class="ph ph-calculator text-lg" aria-hidden="true"></i>
+            </span>
+            <span>FERS Retirement Calculator</span>
+          </a>
+          <nav aria-label="Page sections" class="hidden items-center gap-6 text-sm font-medium text-muted lg:flex">
+            {navItems.map((item) => (
+              <a href={item.href} class="transition-colors hover:text-primary">{item.label}</a>
+            ))}
+          </nav>
+        </div>
+        <nav
+          aria-label="Page sections mobile"
+          class="page-shell flex h-11 items-center gap-5 overflow-x-auto text-sm font-medium text-muted lg:hidden"
+        >
+          {navItems.map((item) => (
+            <a href={item.href} class="inline-flex shrink-0 items-center self-stretch transition-colors hover:text-primary">
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </header>
+    )}
+
+    <main id="main">
+      <slot />
+    </main>
+
+    {!bare && (
+      <footer class="border-t border-line bg-surface">
+        <div class="page-shell flex flex-col gap-6 py-8 text-sm text-muted md:flex-row md:items-start md:justify-between">
+          <div class="max-w-md">
+            <p class="font-semibold text-ink">FERS Retirement Calculator</p>
+            <p class="mt-2 text-xs leading-relaxed">
+              A free educational estimator for federal employees. Calculations run in your browser and are not an official OPM benefit determination.
+            </p>
+          </div>
+          <nav aria-label="Footer sections" class="flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-muted">
+            {footerNavItems.map((item) => (
+              <a href={item.href} class="inline-flex min-h-[44px] items-center transition-colors hover:text-primary">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </footer>
+    )}
+
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </body>
+</html>

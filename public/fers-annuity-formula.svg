@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" width="720" height="200" role="img" aria-labelledby="title desc">
+  <title id="title">FERS annuity formula flow</title>
+  <desc id="desc">High-3 Average Salary times Creditable Service times Multiplier equals Annual FERS Pension.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#8f461c"/>
+    </marker>
+  </defs>
+
+  <rect x="20" y="58" width="150" height="84" rx="12" fill="#f7eadb" stroke="#8f461c"/>
+  <text x="95" y="94" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#173a52">High-3</text>
+  <text x="95" y="118" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#173a52">Average Salary</text>
+
+  <rect x="210" y="58" width="150" height="84" rx="12" fill="#f7eadb" stroke="#8f461c"/>
+  <text x="285" y="94" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#173a52">Creditable</text>
+  <text x="285" y="118" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#173a52">Service</text>
+
+  <rect x="400" y="58" width="140" height="84" rx="12" fill="#f7eadb" stroke="#8f461c"/>
+  <text x="470" y="100" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#173a52">Multiplier</text>
+
+  <rect x="590" y="58" width="110" height="84" rx="12" fill="#8f461c"/>
+  <text x="645" y="92" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#ffffff">Annual</text>
+  <text x="645" y="110" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#ffffff">FERS</text>
+  <text x="645" y="128" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#ffffff">Pension</text>
+
+  <line x1="176" y1="100" x2="204" y2="100" stroke="#8f461c" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="366" y1="100" x2="394" y2="100" stroke="#8f461c" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="546" y1="100" x2="584" y2="100" stroke="#8f461c" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text x="185" y="82" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#8f461c">x</text>
+  <text x="375" y="82" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#8f461c">x</text>
+  <text x="555" y="82" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#8f461c">=</text>
+</svg>

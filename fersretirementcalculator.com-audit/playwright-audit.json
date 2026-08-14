@@ -1,0 +1,1080 @@
+{
+  "homepage": {
+    "url": "http://127.0.0.1:4327/",
+    "dom": {
+      "title": "FERS Retirement Calculator: Estimate Your Federal Pension",
+      "lang": "en",
+      "meta": {
+        "description": "Free FERS retirement calculator for federal employees. Estimate your pension, FERS Supplement, survivor benefit, and compare retirement dates.",
+        "robots": "index, follow",
+        "canonical": "https://fersretirementcalculator.com/",
+        "viewport": "width=device-width, initial-scale=1",
+        "themeColor": "#173a52",
+        "ogTitle": "FERS Retirement Calculator: Estimate Your Federal Pension",
+        "ogImage": "https://fersretirementcalculator.com/og-image.png",
+        "twitterCard": "summary_large_image",
+        "generator": "Astro v5.18.2",
+        "hreflang": 0
+      },
+      "headings": {
+        "h1": [
+          "FERS Retirement Calculator"
+        ],
+        "h2": [
+          "Estimate your FERS pension in under 30 seconds.",
+          "Three numbers give you a starting point.",
+          "One formula, three multipliers.",
+          "Early retirement has a cost.",
+          "A bridge before Social Security.",
+          "See the FERS formula in action, decision by decision.",
+          "FERS is only part of your retirement income.",
+          "Inflation changes the purchasing power of your pension.",
+          "Deferred and postponed are not the same.",
+          "Your retirement system changes the formula.",
+          "Quick check: deferred, postponed, or direct retirement.",
+          "LEO, ATC, firefighters, and nuclear couriers use different rules.",
+          "Military time can count toward your pension.",
+          "After the estimate, verify before you decide.",
+          "What actually goes into your High-3",
+          "Unused sick leave raises the pension, not eligibility.",
+          "A pension choice with long-term consequences.",
+          "When the Supplement applies, and when it can be reduced.",
+          "From estimate to first annuity payment",
+          "FERS terms explained",
+          "Built from OPM guidance.",
+          "How this page is maintained.",
+          "Frequently asked questions"
+        ],
+        "h3": [
+          "High-3 salary",
+          "Creditable service",
+          "Multiplier",
+          "How the MRA+10 reduction works",
+          "Standard example",
+          "Enhanced example",
+          "Special category example",
+          "Who may be eligible",
+          "Approximate method",
+          "Worked example",
+          "Standard FERS example",
+          "Enhanced 1.1% example",
+          "Special category example",
+          "MRA+10 reduction example",
+          "Survivor benefit example",
+          "FERS Supplement example",
+          "Military buyback example",
+          "Unused sick leave example",
+          "Combined monthly income example",
+          "FERS annuity",
+          "Social Security",
+          "TSP",
+          "Other income",
+          "FERS COLA",
+          "Planning implication",
+          "CSRS",
+          "CSRS-Offset",
+          "What to enter",
+          "Why it matters",
+          "Confirm your retirement system",
+          "Check service computation date",
+          "Verify High-3 salary",
+          "Review survivor benefit",
+          "Plan FEHB and FEGLI",
+          "Get an official annuity estimate",
+          "Generally included",
+          "Generally excluded",
+          "How to think about the 36-month window",
+          "Step-by-step example",
+          "Typical eligibility",
+          "Important limitation",
+          "Start planning",
+          "Verify records",
+          "Prepare paperwork",
+          "Final review",
+          "High-3",
+          "Creditable service",
+          "MRA",
+          "FERS Supplement",
+          "TSP",
+          "SCD",
+          "What this page does not calculate"
+        ],
+        "h4": [],
+        "h5": [],
+        "h6": []
+      },
+      "headingCounts": {
+        "h1": 1,
+        "h2": 23,
+        "h3": 52,
+        "h4": 0,
+        "h5": 0,
+        "h6": 0
+      },
+      "links": {
+        "internal": 23,
+        "external": 4,
+        "externalSamples": [
+          {
+            "href": "https://www.opm.gov/retirement-center/fers-information/computation/",
+            "text": "OPM FERS formula",
+            "rel": "noopener noreferrer"
+          },
+          {
+            "href": "https://www.opm.gov/retirement-center/fers-information/computation/",
+            "text": "OPM",
+            "rel": "noopener noreferrer"
+          },
+          {
+            "href": "https://www.opm.gov/retirement-center/fers-information/computation/",
+            "text": "OPM FERS Computation",
+            "rel": "noopener noreferrer"
+          },
+          {
+            "href": "https://www.opm.gov/retirement-center/calculators/federal-ball-park-estimator/",
+            "text": "OPM Federal Ball Park Estimator",
+            "rel": "noopener noreferrer"
+          }
+        ]
+      },
+      "images": [],
+      "imageCount": 0,
+      "imagesWithoutAlt": 0,
+      "schemaBlocks": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://fersretirementcalculator.com/#webpage",
+              "url": "https://fersretirementcalculator.com/",
+              "name": "FERS Retirement Calculator: Estimate Your Federal Pension",
+              "description": "Free FERS retirement calculator for federal employees. Estimate your pension, FERS Supplement, survivor benefit, and compare retirement dates.",
+              "inLanguage": "en",
+              "datePublished": "2026-08-14",
+              "dateModified": "2026-08-14",
+              "mainEntity": {
+                "@id": "https://fersretirementcalculator.com/#app"
+              },
+              "about": {
+                "@id": "https://fersretirementcalculator.com/#app"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://fersretirementcalculator.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "FERS Retirement Calculator",
+                  "item": "https://fersretirementcalculator.com/#calculator"
+                }
+              ]
+            },
+            {
+              "@type": "WebApplication",
+              "@id": "https://fersretirementcalculator.com/#app",
+              "name": "FERS Retirement Calculator",
+              "url": "https://fersretirementcalculator.com/",
+              "description": "Free FERS retirement calculator for federal employees. Estimate your pension, FERS Supplement, survivor benefit, and compare retirement dates.",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Web",
+              "browserRequirements": "Requires JavaScript",
+              "isAccessibleForFree": true,
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "featureList": [
+                "FERS pension estimate",
+                "High-3 salary input",
+                "Creditable service calculation",
+                "Unused sick leave conversion",
+                "Military buyback service credit",
+                "Special category multiplier",
+                "Survivor benefit reduction",
+                "Survivor benefit comparison",
+                "FERS Supplement estimate",
+                "MRA+10 comparison",
+                "Retirement age scenario switching",
+                "Shareable estimate link"
+              ]
+            },
+            {
+              "@type": "TechArticle",
+              "@id": "https://fersretirementcalculator.com/#article",
+              "headline": "How the FERS Retirement Formula Works",
+              "description": "Free FERS retirement calculator for federal employees. Estimate your pension, FERS Supplement, survivor benefit, and compare retirement dates.",
+              "articleSection": [
+                "FERS formula",
+                "High-3 salary",
+                "Creditable service",
+                "FERS Supplement",
+                "Survivor benefit",
+                "Deferred retirement",
+                "Postponed retirement",
+                "FERS COLA"
+              ],
+              "inLanguage": "en",
+              "datePublished": "2026-08-14",
+              "dateModified": "2026-08-14",
+              "author": {
+                "@id": "https://fersretirementcalculator.com/#organization"
+              },
+              "publisher": {
+                "@id": "https://fersretirementcalculator.com/#organization"
+              },
+              "about": {
+                "@id": "https://fersretirementcalculator.com/#app"
+              },
+              "mainEntityOfPage": {
+                "@id": "https://fersretirementcalculator.com/#webpage"
+              }
+            },
+            {
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "How is the FERS pension calculated?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The basic FERS annuity uses High-3 Average Salary, years of creditable service, and a multiplier. The standard multiplier is 1% per year. If you retire at age 62 or later with at least 20 years of service, the multiplier rises to 1.1%. Special category employees such as law enforcement officers, firefighters, and air traffic controllers use 1.7% for the first 20 years and 1% thereafter."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What is the High-3 Average Salary?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "High-3 is the highest average basic pay you earned during any 36 consecutive months of federal service. For most employees, this is the final three years before retirement. It includes basic pay and locality pay, but excludes overtime, bonuses, and most premium pay. Check OPM guidance for the exact pay types included in your situation."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Does unused sick leave increase my FERS pension?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Unused sick leave is converted to creditable service when your annuity is computed. OPM uses a factor of 2,087 hours per year. Sick leave credit can increase the service figure used in the pension formula, but it does not make you eligible to retire earlier."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What is the FERS MRA+10 retirement?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "MRA+10 allows you to retire at your Minimum Retirement Age with at least 10 years of service, but your annuity may be reduced if you begin benefits before age 62. The reduction is 5% per year under age 62, applied by full months as 5/12 of 1% per month. The reduction is avoided with 30 years of service, or with 20 years of service when benefits begin at age 60."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What is the FERS Special Retirement Supplement?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The FERS Supplement is an extra payment that may be paid to eligible federal employees who retire before age 62. It is not Social Security and stops at age 62. This calculator uses an approximate method: your estimated Social Security benefit at 62 multiplied by your FERS service years divided by 40. The result is only an estimate and can be reduced by earned income in some cases."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How does the survivor benefit reduce my FERS annuity?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A full survivor benefit usually reduces your annuity by 10% and provides your spouse with 50% of your unreduced annuity after your death. A partial survivor benefit usually reduces your annuity by 5% and provides 25%. Choosing no survivor benefit leaves your own annuity unreduced but provides no spouse benefit."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Does this calculator account for military service buyback?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. The advanced Military Buyback Years field is meant for military time for which you have paid a deposit. Do not enter military time that has not been credited through the buyback process."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What is the difference between deferred and postponed retirement?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A deferred retirement is for employees who leave federal service before qualifying for an immediate annuity and collect later. A postponed retirement is for employees who already qualify for an immediate annuity but delay beginning it, often to reduce the MRA+10 age penalty. Postponed retirement may also allow FEHB coverage to resume later, while deferred retirement generally does not."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Does this calculator work for CSRS or CSRS-Offset employees?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No, not reliably. This calculator uses FERS formulas. CSRS and CSRS-Offset have different multipliers and eligibility rules. If you are in one of those systems, use the system selector for a warning and verify your estimate with OPM or your HR office."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Should I include Social Security and TSP when planning my FERS retirement?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. FERS is a predictable pension, but most federal employees should view it alongside Social Security and TSP. This calculator now includes a projected monthly income section that combines FERS, Supplement, Social Security, TSP, and other income."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What is the FERS COLA?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "FERS cost-of-living adjustments help protect the purchasing power of your annuity, but eligibility and timing depend on your retirement type. This page explains COLA at a high level. For a formal calculation, check OPM guidance and your retirement records."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What is included in my High-3 salary?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "High-3 generally includes basic pay and locality pay. It excludes overtime, bonuses, cash awards, travel reimbursements, and most premium pay. OPM looks at every possible 36 consecutive months of service and uses the highest average."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How much service credit does my unused sick leave provide?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Unused sick leave is converted using a factor of 2,087 hours per year. For example, 520 hours is about 3 months, 1,040 hours is about 6 months, and 2,087 hours is about 1 year. Sick leave credit increases the pension calculation but does not make you eligible to retire earlier."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What are the survivor benefit choices for FERS?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No survivor benefit leaves your annuity unreduced but provides no spouse benefit. Partial survivor benefit usually reduces your annuity by 5% and provides 25% of the unreduced annuity. Full survivor benefit usually reduces your annuity by 10% and provides 50%."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can the FERS Supplement be reduced by earned income?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. The FERS Special Retirement Supplement is subject to an earnings test before age 62. If your earned income exceeds the annual limit, the Supplement can be reduced or eliminated. This calculator estimates the Supplement but does not apply the earnings test."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "When should I start the federal retirement application process?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Start planning 12 to 18 months before retirement. Verify service, High-3, leave balances, and retirement system with HR 6 to 12 months out. Prepare forms and beneficiary choices around 90 days before retirement, then complete the final review before your official retirement date."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is this estimate my official FERS benefit?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. This is an educational estimate. Your official annuity is determined by OPM and your agency using your official personnel and pay records. Before making a retirement decision, verify your service computation date, leave balances, and retirement system with your HR office."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I retire at age 60 with 20 years of FERS service?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, 20 years of creditable service at age 60 is an immediate FERS retirement age and service combination. It also avoids the MRA+10 age reduction that can apply to earlier retirement. If you retire at 62 or later with at least 20 years of service, the standard multiplier rises from 1.0% to 1.1%."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What happens to my unused annual leave when I retire?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Unused annual leave is typically paid out as a lump sum, subject to agency limits and current law. Annual leave is not converted to creditable service in the same way as unused sick leave. Check with HR before retirement to plan the timing of your departure."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How do I start a military service buyback?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Contact your agency HR or benefits office to request a military deposit estimate. You generally need your DD-214 and the dates of active military service. Paying the deposit makes that military time creditable for FERS eligibility and annuity calculation. Do not enter unpaid military time in the calculator."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What is the difference between the FERS Supplement and Social Security?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The FERS Special Retirement Supplement is paid to certain eligible FERS retirees before age 62. It is not Social Security and ends at age 62. Social Security is a separate benefit you may claim separately, generally from age 62 or later. The calculator estimates the Supplement but does not estimate your Social Security claiming strategy."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What documents should I gather before applying for federal retirement?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Start with your service computation date, personnel actions, recent pay and leave statements, military service records or DD-214 if military buyback applies, beneficiary forms, TSP statements, and any prior federal service records. HR and OPM may also need marriage and dependent documents if you elect a survivor benefit."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How often should I review my FERS estimate?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Review it whenever your High-3 salary, service credit, retirement system, leave balance, or planned retirement date changes. At minimum, update it annually and again 12 to 18 months before retirement, when you should begin verifying official records with HR."
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://fersretirementcalculator.com/#organization",
+              "name": "FERS Retirement Calculator",
+              "url": "https://fersretirementcalculator.com/",
+              "logo": "https://fersretirementcalculator.com/favicon.svg"
+            }
+          ]
+        }
+      ],
+      "schemaTypes": [
+        "WebPage",
+        "BreadcrumbList",
+        "WebApplication",
+        "TechArticle",
+        "FAQPage",
+        "Organization"
+      ],
+      "inputs": [
+        {
+          "tag": "input",
+          "id": "high3",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "High-3 Average Salary"
+        },
+        {
+          "tag": "input",
+          "id": "service-years",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Years of Creditable Service"
+        },
+        {
+          "tag": "input",
+          "id": "retirement-age",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Retirement Age"
+        },
+        {
+          "tag": "input",
+          "id": "birth-year",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Birth Year"
+        },
+        {
+          "tag": "input",
+          "id": "sick-leave",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Unused Sick Leave Hours"
+        },
+        {
+          "tag": "input",
+          "id": "military-years",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Military Buyback Years"
+        },
+        {
+          "tag": "select",
+          "id": "special-category",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Special Category"
+        },
+        {
+          "tag": "select",
+          "id": "retirement-system",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Retirement System"
+        },
+        {
+          "tag": "select",
+          "id": "survivor-benefit",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Survivor Benefit"
+        },
+        {
+          "tag": "input",
+          "id": "social-security-input",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Estimated Social Security at 62"
+        },
+        {
+          "tag": "textarea",
+          "id": "salary-history",
+          "type": "",
+          "hasAccessibleName": false,
+          "labelText": ""
+        },
+        {
+          "tag": "input",
+          "id": "federal-tax-rate",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Federal Tax Withholding %"
+        },
+        {
+          "tag": "input",
+          "id": "state-tax-rate",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "State Tax Withholding %"
+        },
+        {
+          "tag": "input",
+          "id": "tsp-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "TSP Monthly Withdrawal"
+        },
+        {
+          "tag": "input",
+          "id": "other-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Other Monthly Income"
+        },
+        {
+          "tag": "input",
+          "id": "fehb-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "FEHB Monthly Premium"
+        },
+        {
+          "tag": "input",
+          "id": "fegli-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "FEGLI Monthly Premium"
+        },
+        {
+          "tag": "select",
+          "id": "rt-system",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Retirement system"
+        },
+        {
+          "tag": "select",
+          "id": "rt-separation",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Separation situation"
+        }
+      ],
+      "inputsWithoutAccessibleName": 1,
+      "buttons": [
+        {
+          "text": "Advanced options",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Apply High-3",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Calculate",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Reset",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Share",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Copy summary",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Print report",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Embed",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Download report",
+          "ariaLabel": ""
+        }
+      ],
+      "buttonCount": 9,
+      "iframeCount": 0,
+      "overflow": [],
+      "overflowCount": 0,
+      "rawTextLength": 21079,
+      "navTiming": {
+        "ttfb": 61.19999980926514,
+        "fcp": 400,
+        "domContentLoaded": 134.09999990463257,
+        "load": 554.2999999523163
+      }
+    },
+    "cwv": {
+      "lcp": 400,
+      "cls": 0.00018763792773169582,
+      "entries": []
+    },
+    "metrics": {
+      "resourceCount": 4,
+      "totalTransferBytes": 193503,
+      "byType": {
+        "link": 1,
+        "css": 2,
+        "other": 1
+      }
+    },
+    "mobile": {
+      "innerWidth": 390,
+      "scrollWidth": 390,
+      "horizontalScroll": false,
+      "smallTapTargets": [
+        {
+          "tag": "a",
+          "text": "Skip to main content",
+          "w": 1,
+          "h": 1
+        },
+        {
+          "tag": "a",
+          "text": "FERS Retirement Calculator",
+          "w": 252,
+          "h": 32
+        },
+        {
+          "tag": "a",
+          "text": "Calculator",
+          "w": 68,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Formula",
+          "w": 54,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Scenarios",
+          "w": 65,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "FAQ",
+          "w": 28,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "OPM FERS formula",
+          "w": 109,
+          "h": 14
+        },
+        {
+          "tag": "a",
+          "text": "OPM",
+          "w": 30,
+          "h": 14
+        },
+        {
+          "tag": "a",
+          "text": "Calculate",
+          "w": 78,
+          "h": 32
+        },
+        {
+          "tag": "a",
+          "text": "OPM FERS Computation",
+          "w": 164,
+          "h": 16
+        },
+        {
+          "tag": "a",
+          "text": "OPM Federal Ball Park Estimator",
+          "w": 219,
+          "h": 16
+        },
+        {
+          "tag": "summary",
+          "text": "How is the FERS pension calculated? +",
+          "w": 358,
+          "h": 28
+        },
+        {
+          "tag": "summary",
+          "text": "What is the High-3 Average Salary? +",
+          "w": 358,
+          "h": 28
+        },
+        {
+          "tag": "summary",
+          "text": "What is the FERS MRA+10 retirement? +",
+          "w": 358,
+          "h": 28
+        },
+        {
+          "tag": "summary",
+          "text": "What is the FERS COLA? +",
+          "w": 358,
+          "h": 28
+        },
+        {
+          "tag": "summary",
+          "text": "What is included in my High-3 salary? +",
+          "w": 358,
+          "h": 28
+        },
+        {
+          "tag": "summary",
+          "text": "Is this estimate my official FERS benefit? +",
+          "w": 358,
+          "h": 28
+        },
+        {
+          "tag": "summary",
+          "text": "How do I start a military service buyback? +",
+          "w": 358,
+          "h": 28
+        },
+        {
+          "tag": "a",
+          "text": "Calculator",
+          "w": 68,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Formula",
+          "w": 54,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Scenarios",
+          "w": 65,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "FAQ",
+          "w": 28,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "MRA+10",
+          "w": 55,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Supplement",
+          "w": 80,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Examples",
+          "w": 64,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Retirement types",
+          "w": 113,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "CSRS",
+          "w": 38,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Checklist",
+          "w": 62,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Sources",
+          "w": 54,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Disclaimer",
+          "w": 69,
+          "h": 20
+        }
+      ],
+      "smallTapTargetCount": 30
+    }
+  },
+  "embed": {
+    "url": "http://127.0.0.1:4327/embed",
+    "dom": {
+      "title": "FERS Retirement Calculator: Embedded Estimate",
+      "lang": "en",
+      "meta": {
+        "description": "Embeddable FERS retirement calculator for federal employees. Estimate your pension without leaving the host page.",
+        "robots": "noindex, nofollow",
+        "canonical": "https://fersretirementcalculator.com/embed",
+        "viewport": "width=device-width, initial-scale=1",
+        "themeColor": "#173a52",
+        "ogTitle": "FERS Retirement Calculator: Embedded Estimate",
+        "ogImage": "https://fersretirementcalculator.com/og-image.png",
+        "twitterCard": "summary_large_image",
+        "generator": "Astro v5.18.2",
+        "hreflang": 0
+      },
+      "headings": {
+        "h1": [],
+        "h2": [
+          "Estimate your FERS pension in under 30 seconds."
+        ],
+        "h3": [],
+        "h4": [],
+        "h5": [],
+        "h6": []
+      },
+      "headingCounts": {
+        "h1": 0,
+        "h2": 1,
+        "h3": 0,
+        "h4": 0,
+        "h5": 0,
+        "h6": 0
+      },
+      "links": {
+        "internal": 2,
+        "external": 2,
+        "externalSamples": [
+          {
+            "href": "https://www.opm.gov/retirement-center/fers-information/computation/",
+            "text": "OPM FERS formula",
+            "rel": "noopener noreferrer"
+          },
+          {
+            "href": "https://www.opm.gov/retirement-center/fers-information/computation/",
+            "text": "OPM",
+            "rel": "noopener noreferrer"
+          }
+        ]
+      },
+      "images": [],
+      "imageCount": 0,
+      "imagesWithoutAlt": 0,
+      "schemaBlocks": [],
+      "schemaTypes": [],
+      "inputs": [
+        {
+          "tag": "input",
+          "id": "high3",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "High-3 Average Salary"
+        },
+        {
+          "tag": "input",
+          "id": "service-years",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Years of Creditable Service"
+        },
+        {
+          "tag": "input",
+          "id": "retirement-age",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Retirement Age"
+        },
+        {
+          "tag": "input",
+          "id": "birth-year",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Birth Year"
+        },
+        {
+          "tag": "input",
+          "id": "sick-leave",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Unused Sick Leave Hours"
+        },
+        {
+          "tag": "input",
+          "id": "military-years",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Military Buyback Years"
+        },
+        {
+          "tag": "select",
+          "id": "special-category",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Special Category"
+        },
+        {
+          "tag": "select",
+          "id": "retirement-system",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Retirement System"
+        },
+        {
+          "tag": "select",
+          "id": "survivor-benefit",
+          "type": "",
+          "hasAccessibleName": true,
+          "labelText": "Survivor Benefit"
+        },
+        {
+          "tag": "input",
+          "id": "social-security-input",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Estimated Social Security at 62"
+        },
+        {
+          "tag": "textarea",
+          "id": "salary-history",
+          "type": "",
+          "hasAccessibleName": false,
+          "labelText": ""
+        },
+        {
+          "tag": "input",
+          "id": "federal-tax-rate",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Federal Tax Withholding %"
+        },
+        {
+          "tag": "input",
+          "id": "state-tax-rate",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "State Tax Withholding %"
+        },
+        {
+          "tag": "input",
+          "id": "tsp-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "TSP Monthly Withdrawal"
+        },
+        {
+          "tag": "input",
+          "id": "other-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "Other Monthly Income"
+        },
+        {
+          "tag": "input",
+          "id": "fehb-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "FEHB Monthly Premium"
+        },
+        {
+          "tag": "input",
+          "id": "fegli-monthly",
+          "type": "number",
+          "hasAccessibleName": true,
+          "labelText": "FEGLI Monthly Premium"
+        }
+      ],
+      "inputsWithoutAccessibleName": 1,
+      "buttons": [
+        {
+          "text": "Advanced options",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Apply High-3",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Calculate",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Reset",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Share",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Copy summary",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Print report",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Embed",
+          "ariaLabel": ""
+        },
+        {
+          "text": "Download report",
+          "ariaLabel": ""
+        }
+      ],
+      "buttonCount": 9,
+      "iframeCount": 0,
+      "overflow": [],
+      "overflowCount": 0,
+      "rawTextLength": 2556,
+      "navTiming": {
+        "ttfb": 43.5,
+        "fcp": 128,
+        "domContentLoaded": 77.89999985694885,
+        "load": 90.70000004768372
+      }
+    },
+    "cwv": {
+      "lcp": 128,
+      "cls": 0,
+      "entries": []
+    },
+    "metrics": {
+      "resourceCount": 4,
+      "totalTransferBytes": 1200,
+      "byType": {
+        "link": 1,
+        "css": 2,
+        "other": 1
+      }
+    }
+  }
+}
