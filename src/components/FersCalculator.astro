@@ -65,11 +65,11 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
             <span class="pl-3 text-sm text-muted">$</span>
             <input
               id="high3"
-              type="number"
+              type="text"
               inputmode="decimal"
-              min="0"
-              step="1000"
-              value="100000"
+              autocomplete="off"
+              data-currency
+              value="100,000"
               class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
             />
           </span>
@@ -207,11 +207,11 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
               <span class="pl-3 text-sm text-muted">$</span>
               <input
                 id="social-security-input"
-                type="number"
+                type="text"
                 inputmode="decimal"
-                min="0"
-                step="50"
-                value="2000"
+                autocomplete="off"
+                data-currency
+                value="2,000"
                 class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
               />
             </span>
@@ -282,10 +282,10 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
               <span class="pl-3 text-sm text-muted">$</span>
               <input
                 id="tsp-monthly"
-                type="number"
+                type="text"
                 inputmode="decimal"
-                min="0"
-                step="50"
+                autocomplete="off"
+                data-currency
                 value="0"
                 class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
               />
@@ -298,10 +298,10 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
               <span class="pl-3 text-sm text-muted">$</span>
               <input
                 id="other-monthly"
-                type="number"
+                type="text"
                 inputmode="decimal"
-                min="0"
-                step="50"
+                autocomplete="off"
+                data-currency
                 value="0"
                 class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
               />
@@ -314,10 +314,10 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
               <span class="pl-3 text-sm text-muted">$</span>
               <input
                 id="fehb-monthly"
-                type="number"
+                type="text"
                 inputmode="decimal"
-                min="0"
-                step="10"
+                autocomplete="off"
+                data-currency
                 value="0"
                 class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
               />
@@ -330,10 +330,10 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
               <span class="pl-3 text-sm text-muted">$</span>
               <input
                 id="fegli-monthly"
-                type="number"
+                type="text"
                 inputmode="decimal"
-                min="0"
-                step="10"
+                autocomplete="off"
+                data-currency
                 value="0"
                 class="w-full bg-transparent px-3 py-3 text-base font-semibold text-ink outline-none"
               />
@@ -358,14 +358,6 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
         >
           <i class="ph ph-arrow-counter-clockwise text-lg" aria-hidden="true"></i>
           Reset
-        </button>
-        <button
-          type="button"
-          id="share-button"
-          class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-semibold text-ink transition hover:bg-canvas active:translate-y-px"
-        >
-          <i class="ph ph-share-network text-lg" aria-hidden="true"></i>
-          Share
         </button>
         <button
           type="button"
@@ -413,6 +405,12 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
           <p class="mt-1 text-xs text-muted">Updates as you change the inputs.</p>
         </div>
         <i class="ph ph-trend-up text-2xl text-accent" aria-hidden="true"></i>
+      </div>
+
+      <div id="snapshot-panel" class="mt-6 hidden rounded-lg border border-primary/15 bg-primary/5 p-4">
+        <p class="text-sm font-semibold text-ink">Retirement snapshot</p>
+        <dl id="snapshot-details" class="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-xs"></dl>
+        <p id="snapshot-note" class="mt-4 text-xs leading-relaxed text-muted"></p>
       </div>
 
       <p
@@ -465,9 +463,13 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
             <dt class="text-xs font-medium uppercase tracking-normal text-muted">Total with SS/TSP</dt>
             <dd id="combined-monthly" class="mt-2 text-xl font-semibold tracking-normal text-ink">$2,292</dd>
           </div>
+          <div class="sm:col-span-2">
+            <dt class="text-xs font-medium uppercase tracking-normal text-muted">Replacement rate</dt>
+            <dd id="replacement-rate" class="mt-2 text-lg font-semibold tracking-normal text-accent">27.5%</dd>
+          </div>
         </dl>
         <p class="mt-3 text-xs leading-relaxed text-muted">
-          Total includes FERS, Supplement where eligible, Social Security at 62+, TSP, and other income. Taxes are rough estimates.
+          Total includes FERS, Supplement where eligible, Social Security at 62+, TSP, and other income. Taxes are rough estimates. Replacement rate compares your FERS pension to your High-3 salary.
         </p>
       </div>
 
@@ -559,7 +561,6 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     advancedFields: document.getElementById("advanced-fields"),
     calculateButton: document.getElementById("calculate-button"),
     resetButton: document.getElementById("reset-button"),
-    shareButton: document.getElementById("share-button"),
     copySummaryButton: document.getElementById("copy-summary-button"),
     printReportButton: document.getElementById("print-report-button"),
     embedButton: document.getElementById("embed-button"),
@@ -577,7 +578,11 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     netMonthly: document.getElementById("net-monthly"),
     combinedMonthly: document.getElementById("combined-monthly"),
     systemWarning: document.getElementById("system-warning"),
+    snapshotPanel: document.getElementById("snapshot-panel"),
+    snapshotDetails: document.getElementById("snapshot-details"),
+    snapshotNote: document.getElementById("snapshot-note"),
     assumptions: document.getElementById("assumptions"),
+    replacementRate: document.getElementById("replacement-rate"),
     scenarioList: document.getElementById("scenario-list"),
     scenarioSummary: document.getElementById("scenario-summary"),
     survivorComparison: document.getElementById("survivor-comparison"),
@@ -585,8 +590,29 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
   };
 
   function numberFrom(value) {
-    const parsed = Number.parseFloat(value);
+    const normalized = String(value).replace(/[^0-9.-]/g, "");
+    const parsed = Number.parseFloat(normalized);
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+  }
+
+  function formatCurrencyValue(value) {
+    const normalized = String(value).replace(/[^0-9.]/g, "");
+    const parsed = Number.parseFloat(normalized);
+    if (!Number.isFinite(parsed)) return "";
+    return parsed.toLocaleString("en-US", {
+      maximumFractionDigits: 0,
+    });
+  }
+
+  function formatCurrencyInput(input) {
+    const caret = input.selectionStart;
+    const hadCommaBefore = input.value.includes(",");
+    const formatted = formatCurrencyValue(input.value);
+    input.value = formatted;
+    const hadCommaAfter = formatted.includes(",");
+    if (document.activeElement === input && hadCommaBefore === hadCommaAfter && caret !== null) {
+      input.setSelectionRange(caret, caret);
+    }
   }
 
   function getMRA(birthYear) {
@@ -735,6 +761,96 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
 
   function projectService(serviceYears, fromAge, toAge) {
     return Math.max(0, serviceYears + (toAge - fromAge));
+  }
+
+  function getSnapshotInfo(state) {
+    const currentYear = new Date().getFullYear();
+    const currentAge = Math.max(0, currentYear - state.birthYear);
+    const eligibilityService = state.serviceYears + state.militaryYears;
+    const mra = getMRA(state.birthYear);
+    const vested = eligibilityService >= 5;
+
+    let status = "Not vested";
+    let statusDetail = "You need at least 5 years of creditable service to be vested in the FERS basic benefit.";
+
+    if (vested) {
+      const immediate =
+        (currentAge >= 62 && eligibilityService >= 5) ||
+        (currentAge >= 60 && eligibilityService >= 20) ||
+        (currentAge >= mra && eligibilityService >= 30);
+
+      if (immediate) {
+        status = "Immediate retirement eligible";
+        statusDetail = "You currently meet an immediate FERS retirement age and service requirement.";
+      } else if (currentAge >= mra && eligibilityService >= 10) {
+        status = "MRA+10 eligible";
+        statusDetail = "You can retire now with an immediate annuity, but it may be reduced if you begin before age 62.";
+      } else {
+        status = "Deferred";
+        statusDetail = "You are vested but do not yet meet an immediate retirement requirement. If you leave now, you may qualify for a deferred annuity later.";
+      }
+    }
+
+    let earliestUnreduced = "Not yet vested";
+    let earliestAge = null;
+
+    if (eligibilityService >= 30) {
+      earliestUnreduced = formatAge(mra);
+      earliestAge = mra;
+    } else if (eligibilityService >= 20) {
+      earliestUnreduced = "Age 60";
+      earliestAge = 60;
+    } else if (vested) {
+      earliestUnreduced = "Age 62";
+      earliestAge = 62;
+    }
+
+    let note = "";
+    if (vested && earliestAge !== null) {
+      const yearsToUnreduced = earliestAge - currentAge;
+      if (yearsToUnreduced <= 3 && yearsToUnreduced >= 0) {
+        note = `You are within ${yearsToUnreduced === 0 ? "your" : `${Math.floor(yearsToUnreduced) + (yearsToUnreduced > Math.floor(yearsToUnreduced) ? " to " : " ")}year${yearsToUnreduced >= 1 && yearsToUnreduced < 2 ? "" : "s"}`} of your earliest unreduced retirement (${earliestUnreduced}). Ask HR for an official annuity estimate before you decide.`;
+      } else if (yearsToUnreduced > 3) {
+        note = `Your earliest unreduced FERS retirement is ${earliestUnreduced}. Plan ${Math.ceil(yearsToUnreduced)} years ahead so you can verify service and leave balances with HR.`;
+      } else {
+        note = "You are at or past your earliest unreduced retirement age. Verify your official estimate with HR.";
+      }
+    }
+
+    return {
+      currentAge,
+      eligibilityService,
+      status,
+      statusDetail,
+      earliestUnreduced,
+      vested,
+    };
+  }
+
+  function renderSnapshot(state) {
+    const info = getSnapshotInfo(state);
+    elements.snapshotPanel.classList.remove("hidden");
+
+    elements.snapshotDetails.innerHTML = `
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-normal text-muted">Current age</dt>
+        <dd class="mt-1 text-sm font-semibold text-ink">${info.currentAge} (approx)</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-normal text-muted">Creditable service</dt>
+        <dd class="mt-1 text-sm font-semibold text-ink">${info.eligibilityService.toFixed(1)} years</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-normal text-muted">Status today</dt>
+        <dd class="mt-1 text-sm font-semibold text-ink">${info.status}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-normal text-muted">Earliest unreduced</dt>
+        <dd class="mt-1 text-sm font-semibold text-ink">${info.earliestUnreduced}</dd>
+      </div>
+    `;
+
+    elements.snapshotNote.textContent = `${info.statusDetail} ${info.note}`.trim();
   }
 
   function getCurrentState() {
@@ -890,6 +1006,12 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     elements.netMonthly.textContent = currency.format(netMonthly);
     elements.combinedMonthly.textContent = currency.format(combinedGrossMonthly);
 
+    const replacementRate =
+      current.high3 > 0 ? Math.round((current.totalAnnual / current.high3) * 100) : 0;
+    elements.replacementRate.textContent = `${replacementRate}%`;
+
+    renderSnapshot(state);
+
     const isNotFers = state.retirementSystem !== "fers";
     elements.systemWarning.classList.toggle("hidden", !isNotFers);
 
@@ -900,6 +1022,7 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
       `FERS + Supplement monthly: ${currency.format(fersMonthly)}`,
       `Projected gross monthly income: ${currency.format(combinedGrossMonthly)}`,
       `Estimated after-tax monthly income: ${currency.format(netMonthly)}`,
+      `Replacement rate: ${replacementRate}% of High-3`,
     ];
 
     if (isNotFers) {
@@ -1022,7 +1145,7 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
 
   function applyShareState(state) {
     if (!state) return;
-    elements.high3.value = state.high3 ?? 100000;
+    elements.high3.value = formatCurrencyValue(state.high3 ?? 100000);
     elements.serviceYears.value = state.serviceYears ?? 25;
     elements.retirementAge.value = state.age ?? 62;
     elements.birthYear.value = state.birthYear ?? 1970;
@@ -1031,14 +1154,14 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     elements.specialCategory.value = state.specialCategory ?? "none";
     elements.retirementSystem.value = state.retirementSystem ?? "fers";
     elements.survivorBenefit.value = state.survivorBenefit ?? "none";
-    elements.socialSecurity.value = state.socialSecurity ?? 2000;
+    elements.socialSecurity.value = formatCurrencyValue(state.socialSecurity ?? 2000);
     elements.salaryHistory.value = state.salaryHistory ?? "";
     elements.federalTaxRate.value = state.federalTaxRate ?? 15;
     elements.stateTaxRate.value = state.stateTaxRate ?? 5;
-    elements.tspMonthly.value = state.tspMonthly ?? 0;
-    elements.otherMonthly.value = state.otherMonthly ?? 0;
-    elements.fehbMonthly.value = state.fehbMonthly ?? 0;
-    elements.fegliMonthly.value = state.fegliMonthly ?? 0;
+    elements.tspMonthly.value = formatCurrencyValue(state.tspMonthly ?? 0);
+    elements.otherMonthly.value = formatCurrencyValue(state.otherMonthly ?? 0);
+    elements.fehbMonthly.value = formatCurrencyValue(state.fehbMonthly ?? 0);
+    elements.fegliMonthly.value = formatCurrencyValue(state.fegliMonthly ?? 0);
   }
 
   function restoreFromHash() {
@@ -1186,20 +1309,6 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     render();
   });
 
-  elements.shareButton.addEventListener("click", async () => {
-    const shareUrl = `${location.origin}${location.pathname}#data=${encodeURIComponent(JSON.stringify(getShareState()))}`;
-
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      elements.shareButton.querySelector("i").className = "ph ph-check-circle text-lg";
-      window.setTimeout(() => {
-        elements.shareButton.querySelector("i").className = "ph ph-share-network text-lg";
-      }, 1400);
-    } catch {
-      elements.shareButton.title = shareUrl;
-    }
-  });
-
   elements.applyHigh3.addEventListener("click", () => {
     const estimatedHigh3 = computeHigh3FromHistory(elements.salaryHistory.value);
 
@@ -1209,7 +1318,7 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
       return;
     }
 
-    elements.high3.value = Math.round(estimatedHigh3);
+    elements.high3.value = formatCurrencyValue(Math.round(estimatedHigh3));
     elements.high3HelperResult.textContent = `Estimated High-3: ${currency.format(estimatedHigh3)}`;
     render();
   });
@@ -1283,6 +1392,23 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
   for (const input of inputElements) {
     input.addEventListener("input", render);
     input.addEventListener("change", render);
+  }
+
+  const currencyInputs = [
+    elements.high3,
+    elements.socialSecurity,
+    elements.tspMonthly,
+    elements.otherMonthly,
+    elements.fehbMonthly,
+    elements.fegliMonthly,
+  ];
+
+  for (const input of currencyInputs) {
+    input.addEventListener("input", () => {
+      formatCurrencyInput(input);
+      render();
+    });
+    input.addEventListener("blur", () => formatCurrencyInput(input));
   }
 
   const restored = restoreFromHash();

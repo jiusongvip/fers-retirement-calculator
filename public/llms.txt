@@ -28,7 +28,7 @@
 
 ## What this page does
 
-The page calculates the basic FERS annuity and supports advanced inputs for unused sick leave, military buyback, special category multipliers, survivor benefits, and the FERS Special Retirement Supplement.
+The page checks your retirement eligibility, calculates the basic FERS annuity and supports advanced inputs for unused sick leave, military buyback, special category multipliers, survivor benefits, and the FERS Special Retirement Supplement. It also shows a replacement rate and compares retirement age scenarios.
 
 ## Important limitation
 

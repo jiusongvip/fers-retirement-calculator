@@ -44,34 +44,36 @@ html {
   scroll-margin-top: 7.5rem;
 }
 
-body {
-  margin: 0;
-  background: var(--background);
-  color: var(--text);
-  font-family: "Public Sans Variable", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+@layer base {
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: "Public Sans Variable", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-button,
-textarea,
-select,
-input {
-  font: inherit;
-}
+  button,
+  textarea,
+  select,
+  input {
+    font: inherit;
+  }
 
-button {
-  cursor: pointer;
-}
+  button {
+    cursor: pointer;
+  }
 
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
 }
 
 a:focus-visible,
@@ -91,6 +93,12 @@ textarea:focus-visible {
 .page-shell {
   width: min(100% - 2rem, 1180px);
   margin-inline: auto;
+}
+
+.hero-sheen {
+  background:
+    radial-gradient(900px 420px at 85% -10%, rgb(23 58 82 / 0.08), transparent 60%),
+    radial-gradient(700px 380px at -10% 110%, rgb(178 34 52 / 0.05), transparent 55%);
 }
 
 .section-pad {

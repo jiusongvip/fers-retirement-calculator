@@ -29,7 +29,6 @@ const footerNavItems = [
   { href: "#csrs-offset", label: "CSRS" },
   { href: "#checklist", label: "Checklist" },
   { href: "#sources", label: "Sources" },
-  { href: "#disclaimer", label: "Disclaimer" },
 ];
 ---
 
@@ -117,10 +116,117 @@ const footerNavItems = [
                 {item.label}
               </a>
             ))}
+            <button
+              type="button"
+              id="disclaimer-open"
+              class="inline-flex min-h-[44px] items-center text-left transition-colors hover:text-primary"
+            >
+              Disclaimer
+            </button>
           </nav>
         </div>
       </footer>
     )}
+
+    <div
+      id="disclaimer-dialog"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/50 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="disclaimer-dialog-title"
+      data-open="false"
+    >
+      <div class="max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-xl border border-line bg-surface p-6 sm:p-8">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-normal text-accent">Disclaimer</p>
+            <h2 id="disclaimer-dialog-title" class="mt-2 text-2xl font-semibold tracking-tight text-ink">
+              Educational estimate, not an official determination.
+            </h2>
+          </div>
+          <button
+            type="button"
+            id="disclaimer-close"
+            aria-label="Close disclaimer"
+            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line text-ink transition hover:bg-canvas"
+          >
+            <i class="ph ph-x text-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <p class="mt-5 text-sm leading-relaxed text-muted">
+          This is an independent educational estimate, not an official OPM benefit determination. FERS rules and amounts can vary based on your official service record, agency, special provisions, and current law. Before making a retirement decision, verify your numbers with your HR office and OPM.
+        </p>
+
+        <div class="mt-6 grid gap-3 sm:grid-cols-2">
+          <div class="rounded-lg border border-line bg-canvas/50 p-4">
+            <h3 class="text-sm font-semibold text-ink">This tool does not</h3>
+            <ul class="mt-3 space-y-2 text-xs leading-relaxed text-muted">
+              <li>Replace an official OPM annuity computation.</li>
+              <li>Provide legal, tax, or financial advice.</li>
+              <li>Guarantee any future benefit amount.</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-line bg-canvas/50 p-4">
+            <h3 class="text-sm font-semibold text-ink">What to verify</h3>
+            <ul class="mt-3 space-y-2 text-xs leading-relaxed text-muted">
+              <li>Your retirement system and service computation date.</li>
+              <li>Leave balances and military service credit.</li>
+              <li>Survivor benefit elections and beneficiary forms.</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="mt-5 text-xs leading-relaxed text-muted">
+          For an official determination, contact your agency HR or benefits office, or visit
+          <a
+            href="https://www.opm.gov/retirement-center/fers-information/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-primary hover:underline"
+          >
+            OPM FERS Information
+          </a>.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const dialog = document.getElementById("disclaimer-dialog");
+      const openButton = document.getElementById("disclaimer-open");
+      const closeButton = document.getElementById("disclaimer-close");
+
+      function openDialog() {
+        if (!dialog || !openButton) return;
+        dialog.classList.remove("hidden");
+        dialog.classList.add("flex");
+        dialog.dataset.open = "true";
+        document.body.style.overflow = "hidden";
+        closeButton?.focus();
+      }
+
+      function closeDialog() {
+        if (!dialog || !openButton) return;
+        dialog.classList.add("hidden");
+        dialog.classList.remove("flex");
+        dialog.dataset.open = "false";
+        document.body.style.overflow = "";
+        openButton?.focus();
+      }
+
+      openButton?.addEventListener("click", openDialog);
+      closeButton?.addEventListener("click", closeDialog);
+
+      dialog?.addEventListener("click", (event) => {
+        if (event.target === dialog) closeDialog();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && dialog?.dataset.open === "true") {
+          closeDialog();
+        }
+      });
+    </script>
 
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </body>
