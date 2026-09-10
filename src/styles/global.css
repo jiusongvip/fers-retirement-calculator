@@ -154,6 +154,12 @@ textarea:focus-visible {
   padding-block: 5.5rem;
 }
 
+/* Skip style/layout work for below-the-fold sections until they approach the viewport */
+main > section:not(:first-child):not(#calculator-section) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 .text-balance {
   text-wrap: balance;
 }
@@ -191,6 +197,10 @@ textarea:focus-visible {
 }
 
 @media print {
+  main > section {
+    content-visibility: visible;
+  }
+
   body {
     background: #ffffff;
   }

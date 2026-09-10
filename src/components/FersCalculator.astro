@@ -2,7 +2,7 @@
 const { lastReviewed = "2026-08-14" } = Astro.props;
 ---
 
-<section id="calculator" class="overflow-hidden rounded-xl border border-line bg-surface shadow-[0_18px_60px_rgba(23,42,58,0.08)]">
+<section id="calculator" data-last-reviewed={lastReviewed} class="overflow-hidden rounded-xl border border-line bg-surface shadow-[0_18px_60px_rgba(23,42,58,0.08)]">
   <div class="print-only mb-6">
     <p class="text-2xl font-semibold text-ink">FERS Retirement Calculator</p>
     <p class="mt-2 text-sm text-muted">
@@ -530,7 +530,8 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
   </div>
 </div>
 
-<script define:vars={{ lastReviewed }}>
+<script>
+  const lastReviewed = document.getElementById("calculator").dataset.lastReviewed;
   const currency = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
