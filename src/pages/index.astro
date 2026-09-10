@@ -12,7 +12,7 @@ const faqs = [
   {
     question: "How is the FERS pension calculated?",
     answer:
-      "The basic FERS annuity equals your High-3 average salary multiplied by years of creditable service and a multiplier: 1% per year, rising to 1.1% at age 62 or later with at least 20 years of service. Special category employees use 1.7% for their first 20 years.",
+      "High-3 average salary x years of creditable service x multiplier: 1% per year, rising to 1.1% at 62 or later with 20+ years. Special category employees earn 1.7% for their first 20 years.",
   },
   {
     question: "What is the High-3 Average Salary?",
@@ -37,7 +37,7 @@ const faqs = [
   {
     question: "How does the survivor benefit reduce my FERS annuity?",
     answer:
-      "A full survivor benefit reduces your annuity by 10% and pays your spouse 50% of the unreduced amount after your death. A partial benefit reduces 5% for 25%. No election leaves your annuity unreduced with no spouse benefit.",
+      "A full survivor benefit reduces your annuity 10% and pays your spouse 50% of the unreduced amount. Partial: 5% for 25%. No election: unreduced annuity, no spouse benefit.",
   },
   {
     question: "Does this calculator account for military service buyback?",
@@ -47,7 +47,7 @@ const faqs = [
   {
     question: "What is the difference between deferred and postponed retirement?",
     answer:
-      "Deferred retirement applies when you leave federal service before immediate eligibility and collect later. Postponed retirement applies when you are already eligible but delay the start date, often to avoid the MRA+10 penalty or restore FEHB.",
+      "Deferred: you left federal service before immediate eligibility and collect later. Postponed: you are already eligible but delay the start, often to avoid the MRA+10 penalty or restore FEHB.",
   },
   {
     question: "Can the FERS Supplement be reduced by earned income?",
@@ -403,7 +403,7 @@ const schema = {
           One formula, three multipliers.
         </h2>
         <p class="mt-5 text-base leading-relaxed text-muted">
-          The basic FERS annuity is High-3 Average Salary multiplied by creditable service multiplied by the correct multiplier.
+          The basic FERS annuity is High-3 average salary x creditable service x the correct multiplier.
         </p>
         <div class="mt-6 rounded-lg border border-line bg-surface p-6">
           <p class="font-mono text-sm font-semibold leading-7 text-ink">Annual Pension = High-3 x Service x Multiplier</p>
@@ -447,6 +447,21 @@ const schema = {
           </tbody>
         </table>
       </div>
+
+      <figure class="col-span-full mt-6 rounded-lg border border-line bg-canvas/50 p-6">
+        <blockquote class="text-sm leading-relaxed text-muted">
+          &ldquo;1 percent of his average pay &hellip; is the annuity for each year of creditable service&rdquo; &mdash; and, for an employee with at least 20 years of creditable service whose annuity commences at age 62 or later, &ldquo;1.1 percent of his average pay is the annuity for each year of such service&rdquo;.
+        </blockquote>
+        <figcaption class="mt-3 text-xs font-semibold text-ink">
+          &mdash; <cite class="not-italic">5 U.S.C. &sect; 8417(a)</cite>, computation of the basic FERS annuity &middot;
+          <a
+            href="https://www.law.cornell.edu/uscode/text/5/8417"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary hover:underline"
+          >Read the statute</a>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -459,7 +474,14 @@ const schema = {
             Early retirement has a cost.
           </h2>
           <p class="mt-5 text-base leading-relaxed text-muted">
-            You can retire at MRA with 10 years of service, but beginning benefits before 62 can reduce your annuity by 5% per year.
+            You can retire at MRA with 10 years of service, but beginning benefits before 62 can reduce your annuity by 5% per year, under
+            <a
+              href="https://www.ecfr.gov/current/title-5/chapter-III/subchapter-B/part-843"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-primary hover:underline"
+            >
+              5 CFR Part 843</a>.
           </p>
           <div class="mt-6 rounded-lg border border-line bg-canvas/50 p-6">
             <p class="text-sm font-semibold text-ink">No reduction when:</p>
@@ -524,7 +546,7 @@ const schema = {
         <div class="rounded-lg border border-line bg-surface p-6">
           <h3 class="text-base font-semibold text-ink">Who may be eligible</h3>
           <p class="mt-3 text-sm leading-relaxed text-muted">
-            Employees with immediate retirement eligibility, such as 30 years of service, 20 years at age 60, or certain special category retirements.
+            Immediate retirement eligibility: 30 years of service, 20 years at age 60, or certain special category retirements.
           </p>
         </div>
         <div class="rounded-lg border border-line bg-surface p-6">
@@ -683,8 +705,22 @@ const schema = {
             FERS is only part of your retirement income.
           </h2>
           <p class="mt-5 text-base leading-relaxed text-muted">
-          Most federal retirees combine FERS, Social Security, and TSP — the full retirement picture depends on all three.
-        </p>
+            Most federal retirees combine FERS, Social Security, and TSP — the full retirement picture depends on all three.
+          </p>
+          <figure class="mt-6 rounded-lg border border-line bg-canvas/50 p-6">
+            <blockquote class="text-sm leading-relaxed text-muted">
+              &ldquo;You can start receiving your Social Security retirement benefits as early as age 62.&rdquo;
+            </blockquote>
+            <figcaption class="mt-3 text-xs font-semibold text-ink">
+              &mdash; <cite class="not-italic">Social Security Administration</cite>, Retirement Benefits &middot;
+              <a
+                href="https://www.ssa.gov/benefits/retirement/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary hover:underline"
+              >Read on ssa.gov</a>
+            </figcaption>
+          </figure>
         </div>
         <div class="grid gap-4 sm:grid-cols-2">
           <div class="rounded-lg border border-line bg-surface p-6">
@@ -696,13 +732,25 @@ const schema = {
           <div class="rounded-lg border border-line bg-surface p-6">
             <h3 class="text-base font-semibold text-ink">Social Security</h3>
             <p class="mt-3 text-sm leading-relaxed text-muted">
-              Generally begins at 62 or later; the FERS Supplement may bridge part of the gap for eligible early retirees.
+              Generally begins at 62 or later; the FERS Supplement may bridge part of the gap for eligible early retirees. Rules per the
+              <a
+                href="https://www.ssa.gov/benefits/retirement/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-semibold text-primary hover:underline"
+              >Social Security Administration</a>.
             </p>
           </div>
           <div class="rounded-lg border border-line bg-surface p-6">
             <h3 class="text-base font-semibold text-ink">TSP</h3>
             <p class="mt-3 text-sm leading-relaxed text-muted">
-              The flexible piece — withdrawals can be adjusted to market conditions and spending needs.
+              The flexible piece — withdrawals can be adjusted to market conditions and spending needs. See
+              <a
+                href="https://www.tsp.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-semibold text-primary hover:underline"
+              >tsp.gov</a>.
             </p>
           </div>
           <div class="rounded-lg border border-line bg-surface p-6">
@@ -1193,7 +1241,7 @@ const schema = {
             >
               OPM Federal Ball Park Estimator
             </a>
-            <span class="text-muted"> - broader federal retirement planning estimate.</span>
+            <span class="text-muted"> - broader planning estimate.</span>
           </li>
           <li>
             <a
@@ -1237,7 +1285,7 @@ const schema = {
             >
               5 CFR Part 843
             </a>
-            <span class="text-muted"> - OPM regulations computing FERS annuities, including early retirement reductions.</span>
+            <span class="text-muted"> - OPM regulations computing FERS annuities.</span>
           </li>
         </ul>
       </div>
@@ -1272,10 +1320,9 @@ const schema = {
 
         <h3 class="mt-6 text-base font-semibold text-ink">What this page does not calculate</h3>
         <ul class="mt-3 grid gap-2 text-sm leading-relaxed text-muted">
-          <li>Deferred or postponed retirement amounts beyond the guidance shown above.</li>
-          <li>CSRS or CSRS-Offset pension amounts using their official formulas.</li>
-          <li>Final tax advice, FEHB/FEGLI enrollment decisions, or an official OPM determination.</li>
-          <li>Disability retirement or complex disability annuity rules.</li>
+          <li>Deferred or postponed retirement amounts beyond the guidance shown.</li>
+          <li>CSRS or CSRS-Offset amounts using their official formulas.</li>
+          <li>Tax advice, FEHB/FEGLI decisions, disability retirement, or an official OPM determination.</li>
         </ul>
       </div>
     </div>

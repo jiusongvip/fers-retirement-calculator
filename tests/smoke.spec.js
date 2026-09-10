@@ -68,7 +68,7 @@ test("editorial section states what the page does not calculate", async ({ page 
   await page.goto("/");
 
   await expect(page.getByText("What this page does not calculate")).toBeVisible();
-  await expect(page.getByText(/Disability retirement/)).toBeVisible();
+  await expect(page.getByText(/Tax advice/)).toBeVisible();
 });
 
 test("mobile view shows a compact section navigation", async ({ page }) => {
