@@ -5,6 +5,9 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://www.fers-retirement-calculator.com",
   trailingSlash: "always",
+  build: {
+    inlineStylesheets: "always",
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/embed"),
