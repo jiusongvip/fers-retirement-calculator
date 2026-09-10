@@ -16,6 +16,8 @@
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.1"
+    "@phosphor-icons/web": "^2.1.2",
+    "@playwright/test": "^1.62.1",
+    "subset-font": "^2.7.0"
   }
 }

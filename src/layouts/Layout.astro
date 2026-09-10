@@ -42,18 +42,27 @@ const year = new Date().getFullYear();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {!bare && (
-      <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-1TDRP18DCM"></script>
+      <!-- Google tag (gtag.js): injected after window load so it never competes with LCP resources -->
       <script is:inline>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-1TDRP18DCM');
+        function __loadGtm() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1TDRP18DCM';
+          document.head.appendChild(s);
+        }
+        if (document.readyState === 'complete') { __loadGtm(); }
+        else { window.addEventListener('load', __loadGtm, { once: true }); }
       </script>
     )}
     <meta name="theme-color" content="#173a52" />
     <link rel="preload" href="/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/phosphor-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/phosphor-icons.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin />
     <meta name="description" content={description} />
     <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
     <link rel="canonical" href={resolvedCanonical} />
