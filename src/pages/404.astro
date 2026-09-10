@@ -1,0 +1,63 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "Page Not Found - FERS Retirement Calculator";
+const description =
+  "The page you requested could not be found. Return to the free FERS retirement calculator to estimate your pension, FERS Supplement, and survivor benefit.";
+
+const quickLinks = [
+  { href: "/#calculator", label: "Retirement calculator" },
+  { href: "/#formula", label: "FERS formula" },
+  { href: "/#mra-10", label: "MRA+10 rules" },
+  { href: "/#supplement", label: "FERS Supplement" },
+  { href: "/#faq", label: "FAQ" },
+];
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical="https://www.fers-retirement-calculator.com/"
+  noindex={true}
+  bare={true}
+>
+  <section class="hero-sheen min-h-[70vh] px-4 py-16 sm:py-24">
+    <div class="page-shell mx-auto max-w-2xl">
+      <div class="rounded-2xl border border-line bg-surface p-8 text-center shadow-sm sm:p-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-accent">Error 404</p>
+        <h1 class="mt-4 text-balance text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+          This page could not be found.
+        </h1>
+        <p class="mt-4 text-pretty text-base leading-relaxed text-muted">
+          The page you requested may have been moved or never existed. Your FERS estimate is one click away.
+        </p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href="/"
+            class="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-hover sm:w-auto"
+          >
+            Open the FERS calculator
+          </a>
+          <a
+            href="/#faq"
+            class="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border border-line bg-canvas px-6 py-3 text-sm font-semibold text-ink transition hover:bg-soft sm:w-auto"
+          >
+            Browse the FAQ
+          </a>
+        </div>
+        <nav aria-label="Popular sections" class="mt-10 border-t border-line pt-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-muted">Popular sections</p>
+          <ul class="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-medium text-primary">
+            {quickLinks.map((item) => (
+              <li>
+                <a href={item.href} class="underline-offset-4 hover:underline">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+</Layout>
