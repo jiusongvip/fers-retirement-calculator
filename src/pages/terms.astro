@@ -1,0 +1,85 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "Terms of Use - FERS Retirement Calculator";
+const description =
+  "Terms for using the free FERS Retirement Calculator: educational estimates only, no official OPM determination, no warranties, and acceptable use.";
+const updated = "2026-09-10";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: title,
+  description: description,
+  url: "https://www.fers-retirement-calculator.com/terms/",
+  inLanguage: "en",
+  dateModified: updated,
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical="https://www.fers-retirement-calculator.com/terms/"
+  schema={schema}
+  updatedTime={updated}
+>
+  <section class="hero-sheen border-b border-line bg-surface">
+    <div class="page-shell py-14 sm:py-16">
+      <p class="text-sm font-semibold uppercase tracking-wider text-accent">Terms</p>
+      <h1 class="mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+        Terms of Use
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+        Last updated: {updated}
+      </p>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="page-shell max-w-3xl">
+      <h2 class="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Educational purpose only</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        FERS Retirement Calculator is a free educational tool. The estimates it produces are approximations based on published
+        FERS rules and the inputs you provide. They are not an official OPM annuity computation, not benefits counseling, and not
+        legal, tax, or financial advice. Only your agency HR office, your servicing retirement counselor, and OPM can determine
+        your actual benefits.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">No warranties</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        The site and its estimates are provided "as is" without warranties of any kind, express or implied. While formulas are
+        checked against OPM's FERS Computation guidance, rules change and individual circumstances vary — special provisions,
+        deposits owed, partial-year service, and pay history can all change the real numbers. Verify everything important with
+        official sources before acting.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Limitation of liability</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        To the maximum extent permitted by law, the site's operators are not liable for any loss or decision made in reliance on
+        the estimates or content provided. Retirement decisions have lasting consequences; use this tool to prepare questions for
+        your HR office, not as the final word.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Acceptable use</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        You may use and share the calculator freely, including embedding it via the provided embed page with attribution. You may
+        not misrepresent the tool as an official government service, scrape the site in a way that degrades service for others, or
+        use it in any manner that violates applicable law.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Intellectual property</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        The site's design, text, and code are the property of its operators. FERS rules, formulas, and official guidance referenced
+        here are US government works; the calculator implements publicly available rules and claims no rights over them.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Changes to these terms</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        These terms may be updated from time to time; the last updated date above reflects the current version. Continued use of
+        the site after changes constitutes acceptance. Questions can be sent to
+        <a href="mailto:hello@fers-retirement-calculator.com" class="font-semibold text-primary hover:underline">hello@fers-retirement-calculator.com</a>.
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -120,7 +120,7 @@ test("download report creates a text file", async ({ page }) => {
 });
 
 test("embed page renders the calculator without site chrome", async ({ page }) => {
-  await page.goto("/embed");
+  await page.goto("/embed/");
 
   await expect(page.locator("header")).toHaveCount(0);
   await expect(page.locator("footer")).toHaveCount(0);
@@ -187,11 +187,27 @@ test("technical files are available for crawlers and AI assistants", async ({ re
   const llms = await request.get("/llms.txt");
 
   expect(robots.status()).toBe(200);
-  expect(await robots.text()).toContain("fersretirementcalculator.com");
+  expect(await robots.text()).toContain("fers-retirement-calculator.com");
 
   expect(sitemap.status()).toBe(200);
-  expect(await sitemap.text()).toContain("https://fersretirementcalculator.com/");
+  expect(await sitemap.text()).toContain("https://www.fers-retirement-calculator.com/");
 
   expect(llms.status()).toBe(200);
   expect(await llms.text()).toContain("# FERS Retirement Calculator");
+});
+
+test("trust pages render with a unique H1 and site page links", async ({ page }) => {
+  const paths = ["/about/", "/contact/", "/privacy/", "/terms/"];
+
+  for (const path of paths) {
+    await page.goto(path);
+    await expect(page).toHaveTitle(/FERS Retirement Calculator/);
+    await expect(page.locator("h1")).toHaveCount(1);
+
+    const siteNav = page.getByRole("navigation", { name: "Site pages" });
+    await expect(siteNav.getByRole("link", { name: "About" })).toBeVisible();
+    await expect(siteNav.getByRole("link", { name: "Contact" })).toBeVisible();
+    await expect(siteNav.getByRole("link", { name: "Privacy Policy" })).toBeVisible();
+    await expect(siteNav.getByRole("link", { name: "Terms of Use" })).toBeVisible();
+  }
 });

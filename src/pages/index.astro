@@ -246,6 +246,16 @@ const schema = {
       name: "FERS Retirement Calculator",
       url: "https://www.fers-retirement-calculator.com/",
       logo: "https://www.fers-retirement-calculator.com/favicon.svg",
+      email: "hello@fers-retirement-calculator.com",
+      sameAs: ["https://github.com/jiusongvip/fers-retirement-calculator"],
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "customer support",
+          email: "hello@fers-retirement-calculator.com",
+          url: "https://www.fers-retirement-calculator.com/contact/",
+        },
+      ],
     },
   ],
 };
@@ -1354,7 +1364,25 @@ const schema = {
           Built from OPM guidance.
         </h2>
         <p class="mt-5 text-base leading-relaxed text-muted">
-          Verify the latest rules directly with OPM and your agency HR office.
+          Every formula on this page is cited to official sources: according to OPM's FERS Computation guidance, the basic annuity
+          is computed from your High-3 average salary and creditable service. The governing rules are set by
+          <a
+            href="https://www.law.cornell.edu/uscode/text/5/8417"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-primary hover:underline"
+          >
+            5 U.S.C. § 8417
+          </a>
+          (FERS basic annuity computation) and OPM's implementing regulations in
+          <a
+            href="https://www.ecfr.gov/current/title-5/chapter-III/subchapter-B/part-843"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-primary hover:underline"
+          >
+            5 CFR Part 843
+          </a>. Verify the latest rules directly with OPM and your agency HR office.
         </p>
         <ul class="mt-6 grid gap-3 text-sm leading-relaxed text-muted">
           <li>
@@ -1400,6 +1428,28 @@ const schema = {
               Thrift Savings Plan
             </a>
             <span class="text-muted"> - official TSP account and withdrawal information.</span>
+          </li>
+          <li>
+            <a
+              href="https://www.law.cornell.edu/uscode/text/5/8417"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-primary hover:underline"
+            >
+              5 U.S.C. § 8417
+            </a>
+            <span class="text-muted"> - statute governing FERS basic annuity computation.</span>
+          </li>
+          <li>
+            <a
+              href="https://www.ecfr.gov/current/title-5/chapter-III/subchapter-B/part-843"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-primary hover:underline"
+            >
+              5 CFR Part 843
+            </a>
+            <span class="text-muted"> - OPM regulations computing FERS annuities, including early retirement reductions.</span>
           </li>
         </ul>
       </div>

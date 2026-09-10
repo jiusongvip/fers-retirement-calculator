@@ -17,22 +17,24 @@ const {
 const resolvedCanonical = Astro.url.pathname === "/" ? canonical.replace(/\/$/, "") : canonical;
 
 const navItems = [
-  { href: "#calculator", label: "Calculator" },
-  { href: "#formula", label: "Formula" },
-  { href: "#scenarios", label: "Scenarios" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#calculator", label: "Calculator" },
+  { href: "/#formula", label: "Formula" },
+  { href: "/#scenarios", label: "Scenarios" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 const footerNavItems = [
   ...navItems,
-  { href: "#mra-10", label: "MRA+10" },
-  { href: "#supplement", label: "Supplement" },
-  { href: "#worked-examples", label: "Examples" },
-  { href: "#deferred-postponed", label: "Retirement types" },
-  { href: "#csrs-offset", label: "CSRS" },
-  { href: "#checklist", label: "Checklist" },
-  { href: "#sources", label: "Sources" },
+  { href: "/#mra-10", label: "MRA+10" },
+  { href: "/#supplement", label: "Supplement" },
+  { href: "/#worked-examples", label: "Examples" },
+  { href: "/#deferred-postponed", label: "Retirement types" },
+  { href: "/#csrs-offset", label: "CSRS" },
+  { href: "/#checklist", label: "Checklist" },
+  { href: "/#sources", label: "Sources" },
 ];
+
+const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -136,6 +138,15 @@ const footerNavItems = [
             >
               Disclaimer
             </button>
+          </nav>
+        </div>
+        <div class="page-shell flex flex-col gap-3 border-t border-line py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p>© {year} FERS Retirement Calculator. Educational estimates only — not affiliated with OPM.</p>
+          <nav aria-label="Site pages" class="flex flex-wrap gap-x-5 gap-y-2 font-medium">
+            <a href="/about/" class="transition-colors hover:text-primary">About</a>
+            <a href="/contact/" class="transition-colors hover:text-primary">Contact</a>
+            <a href="/privacy/" class="transition-colors hover:text-primary">Privacy Policy</a>
+            <a href="/terms/" class="transition-colors hover:text-primary">Terms of Use</a>
           </nav>
         </div>
       </footer>

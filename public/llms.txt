@@ -25,6 +25,10 @@
 - [Editorial standards](https://www.fers-retirement-calculator.com/#editorial)
 - [FAQ](https://www.fers-retirement-calculator.com/#faq)
 - [Sources](https://www.fers-retirement-calculator.com/#sources)
+- [About](https://www.fers-retirement-calculator.com/about/)
+- [Contact](https://www.fers-retirement-calculator.com/contact/)
+- [Privacy Policy](https://www.fers-retirement-calculator.com/privacy/)
+- [Terms of Use](https://www.fers-retirement-calculator.com/terms/)
 
 ## What this page does
 

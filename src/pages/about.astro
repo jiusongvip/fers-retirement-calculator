@@ -1,0 +1,88 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "About This FERS Retirement Calculator Project";
+const description =
+  "Independent, free FERS retirement calculator built for US federal employees. Learn who we are, how the estimates work, and the sources behind every formula.";
+const updated = "2026-09-10";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: title,
+  description: description,
+  url: "https://www.fers-retirement-calculator.com/about/",
+  inLanguage: "en",
+  dateModified: updated,
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical="https://www.fers-retirement-calculator.com/about/"
+  schema={schema}
+  updatedTime={updated}
+>
+  <section class="hero-sheen border-b border-line bg-surface">
+    <div class="page-shell py-14 sm:py-16">
+      <p class="text-sm font-semibold uppercase tracking-wider text-accent">About</p>
+      <h1 class="mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+        About FERS Retirement Calculator
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+        A free, independent estimator that helps US federal employees understand their FERS pension before making a retirement decision.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="page-shell max-w-3xl">
+      <h2 class="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Why we built this calculator</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        Federal employees face a high-stakes decision: when to retire, which retirement type to choose, and how survivor benefits
+        change the math. Official tools exist, but few explain the rules behind the numbers. This project pairs a working
+        calculator with plain-English explanations of High-3, MRA+10, the FERS Supplement, COLA, and deferred versus postponed
+        retirement, so you can see both the estimate and the reasoning.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">How the estimates work</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        The calculator runs entirely in your browser using the standard FERS formula: your High-3 average salary multiplied by
+        years of creditable service and a 1% multiplier, rising to 1.1% if you retire at age 62 or later with at least 20 years of
+        service. Advanced inputs cover unused sick leave (converted at 2,087 hours per year), military buyback deposits, special
+        category multipliers for law enforcement officers, firefighters, and air traffic controllers, and survivor benefit
+        elections. The FERS Supplement is approximated from your projected Social Security benefit at age 62, scaled by your FERS
+        service divided by 40.
+      </p>
+      <p class="mt-3 text-base leading-relaxed text-muted">
+        These rules come from OPM's FERS computation guidance and the underlying statute. The formulas and multipliers are checked
+        by hand against worked examples before every release.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Editorial standards</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        Content is reviewed against OPM's FERS Computation guidance at least once a year, and the review date is updated whenever
+        material changes are made — the latest review is shown in the page metadata. Corrections are welcome: if you find a
+        formula or rule that does not match official guidance, contact us and we will verify and fix it.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Independence and funding</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        This site is independently operated and completely free. There are no accounts, no paywalls, and no data collection from
+        the calculator itself — your inputs never leave your browser. The site is not affiliated with, endorsed by, or connected
+        to the US Office of Personnel Management or any government agency. For official benefit determinations, always work with
+        your agency HR office and OPM.
+      </p>
+
+      <h2 class="mt-10 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Contact</h2>
+      <p class="mt-4 text-base leading-relaxed text-muted">
+        Questions, corrections, or feedback? Email
+        <a href="mailto:hello@fers-retirement-calculator.com" class="font-semibold text-primary hover:underline">hello@fers-retirement-calculator.com</a>
+        or visit the <a href="/contact/" class="font-semibold text-primary hover:underline">contact page</a>. You can also read our
+        <a href="/privacy/" class="font-semibold text-primary hover:underline">privacy policy</a> and
+        <a href="/terms/" class="font-semibold text-primary hover:underline">terms of use</a>.
+      </p>
+    </div>
+  </section>
+</Layout>
