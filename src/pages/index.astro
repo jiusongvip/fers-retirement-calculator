@@ -281,17 +281,19 @@ const schema = {
       <div class="hidden lg:block">
         <div class="overflow-hidden rounded-2xl border border-line bg-canvas/70 shadow-[0_28px_80px_rgba(23,42,58,0.12)]">
           <div class="relative aspect-[3/2] overflow-hidden">
-            <img
-              src="/hero-1170.webp"
-              srcset="/hero-768.webp 768w, /hero-1170.webp 1170w"
-              sizes="(min-width: 1024px) 500px, 92vw"
-              alt="Federal retirement planning at a peaceful desk with planning documents"
-              width="1170"
-              height="780"
-              loading="eager"
-              fetchpriority="high"
-              class="h-full w-full object-cover"
-            />
+            <!-- Image is only visible on lg+ screens; the media query keeps mobile from downloading it -->
+            <picture>
+              <source media="(min-width: 1024px)" srcset="/hero-768.webp 768w, /hero-1170.webp 1170w" sizes="500px" />
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1170 780'%3E%3C/svg%3E"
+                alt="Federal retirement planning at a peaceful desk with planning documents"
+                width="1170"
+                height="780"
+                loading="eager"
+                fetchpriority="high"
+                class="h-full w-full object-cover"
+              />
+            </picture>
             <div class="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent"></div>
             <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3">
               <p class="text-sm font-semibold uppercase tracking-wider text-white drop-shadow">Your FERS benefit</p>
@@ -418,6 +420,8 @@ const schema = {
           alt="FERS annuity formula: High-3 average salary times creditable service times multiplier equals annual FERS pension."
           width="720"
           height="200"
+          loading="lazy"
+          decoding="async"
           class="mt-6 h-auto w-full max-w-xl rounded-lg border border-line bg-surface"
         />
       </div>

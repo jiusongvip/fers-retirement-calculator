@@ -971,7 +971,19 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     }
   }
 
-  function render() {
+  let pendingDeferredRender = null;
+
+  function cancelDeferredRender() {
+    if (pendingDeferredRender === null) return;
+    if ("requestIdleCallback" in window) {
+      window.cancelIdleCallback(pendingDeferredRender);
+    } else {
+      window.clearTimeout(pendingDeferredRender);
+    }
+    pendingDeferredRender = null;
+  }
+
+  function renderCore() {
     const state = getCurrentState();
     const current = getScenario(state);
 
@@ -1016,6 +1028,12 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     const isNotFers = state.retirementSystem !== "fers";
     elements.systemWarning.classList.toggle("hidden", !isNotFers);
 
+    return { state, current, fersMonthly, combinedGrossMonthly, netMonthly, replacementRate, isNotFers };
+  }
+
+  function renderAssumptions(ctx) {
+    const { state, current, fersMonthly, combinedGrossMonthly, netMonthly, replacementRate, isNotFers } = ctx;
+
     const assumptions = [
       `High-3 salary: ${currency.format(current.high3)}`,
       `Creditable service: ${current.totalService.toFixed(1)} years`,
@@ -1051,11 +1069,15 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
     elements.assumptions.innerHTML = assumptions
       .map((text) => `<li>${text}</li>`)
       .join("");
+  }
+
+  function renderScenarios(ctx) {
+    const { state, current } = ctx;
+    const mraAge = current.mra;
 
     elements.scenarioList.innerHTML = "";
     elements.scenarioSummary.innerHTML = "";
 
-    const mraAge = current.mra;
     const scenarios = [
       {
         label: "Your entry",
@@ -1106,6 +1128,11 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
         );
       }
     }
+  }
+
+  function renderSurvivorAndDecision(ctx) {
+    const { state, current } = ctx;
+    const mraAge = current.mra;
 
     renderSurvivorComparison(state);
 
@@ -1138,6 +1165,39 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
       elements.decisionSummary.textContent =
         "You are at or past age 62. If you have at least 20 years of service, the 1.1% multiplier can apply and there is no FERS age reduction.";
     }
+  }
+
+  function render() {
+    cancelDeferredRender();
+    const ctx = renderCore();
+    renderAssumptions(ctx);
+    renderScenarios(ctx);
+    renderSurvivorAndDecision(ctx);
+  }
+
+  /* Initial paint only updates the visible numbers; the heavy below-the-fold
+     DOM is built in small idle-time chunks so it never blocks the main thread
+     for long on mobile. Any user input triggers a full synchronous render. */
+  function scheduleInitialRender() {
+    const ctx = renderCore();
+    const tasks = [
+      () => renderAssumptions(ctx),
+      () => renderScenarios(ctx),
+      () => renderSurvivorAndDecision(ctx),
+    ];
+
+    const step = () => {
+      pendingDeferredRender = null;
+      const task = tasks.shift();
+      task?.();
+      if (tasks.length) enqueue();
+    };
+    const enqueue = () => {
+      pendingDeferredRender = "requestIdleCallback" in window
+        ? window.requestIdleCallback(step, { timeout: 1000 })
+        : window.setTimeout(step, 60);
+    };
+    enqueue();
   }
 
   function getShareState() {
@@ -1413,9 +1473,9 @@ const { lastReviewed = "2026-08-14" } = Astro.props;
   }
 
   const restored = restoreFromHash();
-  if (!restored) {
+  if (restored) {
     render();
   } else {
-    render();
+    scheduleInitialRender();
   }
 </script>

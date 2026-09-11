@@ -160,6 +160,14 @@ main > section:not(:first-child):not(#calculator-section) {
   contain-intrinsic-size: auto 900px;
 }
 
+/* On phones the calculator sits well below the fold; skip its layout too */
+@media (max-width: 1023px) {
+  #calculator-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 2200px;
+  }
+}
+
 .text-balance {
   text-wrap: balance;
 }
